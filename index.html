@@ -24,7 +24,7 @@
             display: flex; flex-direction: column; overflow-x: hidden;
         }
 
-        /* --- 背景滑動 --- */
+        /* --- 背景動態 --- */
         .page-background-stage { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: -2; pointer-events: none; }
         .page-background-image {
             position: absolute; bottom: -40%; left: -40%; width: 180%; height: 180%;
@@ -44,58 +44,47 @@
         /* --- 主舞台 --- */
         .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 10px 10px 30px; }
         .instruction-main { font-family: 'Noto Sans TC', sans-serif; font-size: 2.4rem; font-weight: 900; text-shadow: 0 0 5px #fff, 0 0 20px var(--neon-main); margin-bottom: 5px; text-align: center; }
-        .global-hook { font-size: 1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 8px; text-align: center; }
+        .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 8px; text-align: center; }
         .pk-sub-header { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.3rem; letter-spacing: 4px; color: var(--neon-main); margin-bottom: 30px; text-align: center; }
 
+        /* PK 模組 */
         .versus-module { display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%; max-width: 1000px; position: relative; padding: 0 10px; }
         
         .babe-card { 
             flex: 0 0 350px; width: 350px; height: 350px; background: #0a0a0a; border: 2px solid #222; 
             position: relative; cursor: pointer; overflow: hidden; 
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.5s ease;
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s ease;
             animation: card-wait-pulse 3s infinite ease-in-out; 
             will-change: transform; transform: translateZ(0);
+            backface-visibility: hidden;
         }
         @keyframes card-wait-pulse { 0%, 100% { transform: scale(1); border-color: #222; } 50% { transform: scale(1.02); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
-        .babe-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        
+        /* 圖片基礎狀態 */
+        .babe-card img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            opacity: 0.9; transition: opacity 0.3s ease; /* 換圖時的平滑淡入淡出 */
+        }
 
         .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; }
 
+        /* --- 2. 文字尺寸調整回來 --- */
+        .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; text-shadow: 0 2px 10px #000; }
+        .intro-text { font-size: 0.9rem; color: var(--neon-main); font-weight: bold; margin-top: 2px; }
+
+        /* --- 手機版 RWD --- */
         @media (max-width: 800px) {
             .versus-module { gap: 10px; padding: 0 5px; }
             .babe-card { flex: 0 0 calc(50vw - 12px); width: calc(50vw - 12px); height: calc(50vw - 12px); }
             .vs-sign { font-size: 2.2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; background: rgba(0,0,0,0.5); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
             .instruction-main { font-size: 1.5rem; }
-            .winner-move-to-left { animation: slideWinnerLeftMob 0.6s forwards !important; }
-            @keyframes slideWinnerLeftMob { to { transform: translateX(calc(-50vw + 2px)); } }
-            
-            /* **核心優化：手機版勝利卡片防裁切與合適尺寸** */
-            .winner-final-card {
-                /* 強制固定 1:1 比例 */
-                aspect-ratio: 1 / 1 !important;
-                /* 合適尺寸：縮減螢幕佔比 */
-                width: calc(85vw - 20px) !important;
-                height: calc(85vw - 20px) !important;
-                max-width: none !important;
-                max-height: none !important;
-                border-color: var(--neon-main) !important;
-                box-shadow: 0 0 50px var(--neon-glow);
-            }
-            
-            /* 優化 1:1 卡片中的資訊面板 */
-            .winner-final-card .info-panel {
-                padding: 10px 12px !important;
-                background: linear-gradient(transparent, rgba(0,0,0,0.95) 75%) !important;
-            }
-            .winner-final-card .name-meta { font-size: 1.6rem !important; }
-            .winner-final-card .intro-text { font-size: 0.85rem !important; }
+            .name-meta { font-size: 1.4rem; } /* 手機版稍縮但依然清晰 */
+            .intro-text { font-size: 0.8rem; }
         }
 
-        @media (min-width: 801px) {
-            .winner-move-to-left { animation: slideWinnerLeftPC 0.6s forwards !important; }
-            @keyframes slideWinnerLeftPC { to { transform: translateX(-370px); } }
-        }
-
+        /* 動態類別 */
+        .winner-move-to-left { animation: slideWinnerLeft 0.6s forwards !important; }
+        @keyframes slideWinnerLeft { to { transform: translateX(calc(-100% - 20px)); } }
         .loser-exit-left { animation: exitLeft 0.6s forwards !important; }
         @keyframes exitLeft { to { transform: translateX(-150%) scale(0.8); opacity: 0; filter: blur(8px); } }
         .loser-exit-right { animation: exitRight 0.6s forwards !important; }
@@ -103,16 +92,14 @@
         .new-challenger-in { animation: challengerIn 0.6s forwards; }
         @keyframes challengerIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
+        /* 資訊面板 */
         .flag-tag { position: absolute; top: 10px; left: 10px; font-size: 1.5rem; z-index: 5; }
-        .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 10px 8px; background: linear-gradient(transparent, rgba(0,0,0,0.9) 70%); text-align: left; }
-        .name-meta { font-size: 1.1rem; font-weight: 900; color: #fff; }
-        .intro-text { font-size: 0.7rem; color: var(--neon-main); font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 75%); text-align: left; }
 
         /* --- FOOTER --- */
         .promo-footer { background: var(--glass); border-top: 2px solid var(--neon-main); padding: 25px 15px 15px; display: flex; flex-direction: column; align-items: center; z-index: 100; text-align: center; margin-top: auto; }
         .promo-title { font-size: 1.4rem; color: var(--neon-light); font-weight: 900; margin-bottom: 8px; text-shadow: 0 0 10px var(--neon-main); }
         .promo-desc { font-size: 1.1rem; color: #eee; margin-bottom: 15px; max-width: 700px; }
-        .promo-desc b { color: var(--neon-main); }
         .promo-row-top { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; }
         .promo-copy-wrap { display: flex; align-items: center; background: #000; padding: 4px 4px 4px 12px; border: 1px solid #444; border-radius: 4px; }
         .promo-code { font-size: 1.4rem; font-weight: 900; color: #fff; font-family: 'Bebas Neue', sans-serif; margin-right: 10px; letter-spacing: 2px;}
@@ -123,7 +110,17 @@
         .platform-declare-wrap { display: flex; align-items: center; justify-content: center; gap: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; font-size: 1rem; font-weight: 900; white-space: nowrap;}
         .footer-logo-small { height: 16px; filter: drop-shadow(0 0 5px #fff); }
 
+        /* 勝利者呈現優化 */
         .winner-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: popIn 0.6s ease-out; width: 100%; }
+        .winner-final-card {
+            aspect-ratio: 1 / 1 !important;
+            width: min(85vw, 400px) !important;
+            height: auto !important;
+            border-color: var(--neon-main) !important;
+            box-shadow: 0 0 50px var(--neon-glow);
+        }
+        .winner-final-card .name-meta { font-size: 2.2rem !important; }
+        .winner-final-card .intro-text { font-size: 1.1rem !important; }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
@@ -194,22 +191,34 @@
         let currentChoice = [pool.pop(), pool.pop()]; 
         let isAnimating = false; 
 
-        function preloadNextImages() {
-            pool.slice(-2).forEach(b => {
-                const img = new Image();
-                img.src = b.img;
-            });
-        }
-
-        function renderRound() {
+        function renderRound(targetIdx = null) {
             currentChoice.forEach((b, i) => {
                 const imgEl = document.getElementById(`img${i}`);
-                if (imgEl.src !== b.img) imgEl.src = b.img;
-                document.getElementById(`flag${i}`).innerText = b.flag;
-                document.getElementById(`name${i}`).innerText = b.name;
-                document.getElementById(`intro${i}`).innerText = b.intro;
+                const flagEl = document.getElementById(`flag${i}`);
+                const nameEl = document.getElementById(`name${i}`);
+                const introEl = document.getElementById(`intro${i}`);
+
+                // 如果是需要換圖的那張卡片
+                if (targetIdx === i || targetIdx === null) {
+                    imgEl.style.opacity = '0'; // 1. 先變透明，防止殘影
+                    
+                    const tempImg = new Image();
+                    tempImg.src = b.img;
+                    tempImg.onload = () => {
+                        imgEl.src = b.img;
+                        flagEl.innerText = b.flag;
+                        nameEl.innerText = b.name;
+                        introEl.innerText = b.intro;
+                        imgEl.style.opacity = '0.9'; // 2. 圖片加載完畢後再顯示
+                    };
+                } else {
+                    // 不需要換圖的那張（贏家），直接更新位置即可
+                    imgEl.src = b.img;
+                    flagEl.innerText = b.flag;
+                    nameEl.innerText = b.name;
+                    introEl.innerText = b.intro;
+                }
             });
-            preloadNextImages();
         }
 
         function makeChoice(idx) {
@@ -223,18 +232,33 @@
             
             if (pool.length > 0) {
                 const challenger = pool.pop();
-                if (idx === 0) { card1.classList.add('loser-exit-right'); } 
-                else { card0.classList.add('loser-exit-left'); card1.classList.add('winner-move-to-left'); }
+
+                // 動畫：左邊贏或右邊贏
+                if (idx === 0) {
+                    card1.classList.add('loser-exit-right');
+                } else {
+                    card0.classList.add('loser-exit-left');
+                    card1.classList.add('winner-move-to-left');
+                }
                 vsSign.style.opacity = '0';
 
                 setTimeout(() => {
+                    // 移除動畫類別，重置位置
                     card0.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
                     card1.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
+                    
                     currentChoice = [winner, challenger];
-                    renderRound();
+                    
+                    // 呼叫渲染，並指定只有 index 1 (挑戰者位) 需要執行淡入換圖
+                    renderRound(1);
+                    
                     card1.classList.add('new-challenger-in');
                     vsSign.style.opacity = '1';
-                    setTimeout(() => { card1.classList.remove('new-challenger-in'); isAnimating = false; }, 600);
+
+                    setTimeout(() => {
+                        card1.classList.remove('new-challenger-in');
+                        isAnimating = false;
+                    }, 600);
                 }, 600);
             } else {
                 showFinalist(winner);
@@ -245,7 +269,6 @@
             document.querySelector('.instruction-main').style.display = 'none';
             document.querySelector('.global-hook').style.display = 'none';
             document.getElementById('pkHeader').style.display = 'none'; 
-            
             document.getElementById('pkStage').innerHTML = `
                 <div class="winner-stage">
                     <div class="babe-card winner-final-card">
@@ -265,6 +288,7 @@
         function openLiveroom() { window.location.href = "https://swag.live/"; }
         function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("代碼已複製！"); }
         
+        // 初始載入
         renderRound();
     </script>
 </body>
