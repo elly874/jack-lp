@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWAG x Jack | EXOTIC NEON NIGHT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:ital,wght@1,900&family=Bebas+Neue&family=Noto+Sans+TC:wght@900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #050505;
+            --neon-main: #00D2BE; 
+            --neon-light: #E0FFFF; 
+            --neon-glow: rgba(0, 210, 190, 0.4);
+            --glass: rgba(0, 0, 0, 0.95);
+            --gold: #FFD700;
+            --ms-font: "Microsoft YaHei", "微軟雅黑", sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        
+        body { 
+            background-color: var(--bg-deep); color: #fff; font-family: var(--ms-font);
+            line-height: 1.6; width: 100vw; height: 100vh;
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        /* --- 背景滑動 (65% 亮度) --- */
+        .page-background-stage { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: -2; pointer-events: none; }
+        .page-background-image {
+            position: absolute; bottom: -40%; left: -40%; width: 180%; height: 180%;
+            background-image: url('https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Creator_bg.jpg'); 
+            background-size: cover; background-position: center;
+            opacity: 0.65; animation: bg-cinematic-slide 40s ease-in-out infinite;
+        }
+        @keyframes bg-cinematic-slide { 0% { transform: translate(0%, 0%); } 50% { transform: translate(10%, -10%); } 100% { transform: translate(0%, 0%); } }
+
+        /* --- Header --- */
+        .top-header { padding-top: 40px; text-align: center; z-index: 10; }
+        .logo-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
+        .logo-img { height: 38px; filter: drop-shadow(0 0 10px var(--neon-main)); }
+        .small-title { font-size: 1.8rem; font-weight: 900; text-shadow: 0 0 10px var(--neon-main); }
+
+        /* --- 主舞台 --- */
+        .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; }
+        .instruction-main { font-family: 'Noto Sans TC', sans-serif; font-size: 2.8rem; font-weight: 900; text-shadow: 0 0 5px #fff, 0 0 20px var(--neon-main); margin-bottom: 5px; }
+        .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 2px; margin-bottom: 10px; }
+        .pk-sub-header { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.5rem; letter-spacing: 6px; color: var(--neon-main); margin-bottom: 35px; }
+
+        .versus-module { display: flex; align-items: center; justify-content: center; gap: 35px; width: 100%; max-width: 950px; position: relative; }
+        
+        .babe-card { 
+            flex: none; width: 380px; height: 380px; background: #0a0a0a; border: 2px solid #222; 
+            position: relative; cursor: pointer; overflow: hidden; 
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.5s ease;
+            animation: card-wait-pulse 3s infinite ease-in-out; 
+        }
+        @keyframes card-wait-pulse { 0%, 100% { transform: scale(1); border-color: #222; } 50% { transform: scale(1.02); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
+        
+        .babe-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        .babe-card:hover { border-color: var(--neon-main); box-shadow: 0 0 40px var(--neon-glow); transform: scale(1.03); z-index: 10; animation: none; }
+
+        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); transition: opacity 0.3s; }
+
+        /* PK 動畫 */
+        .winner-move-to-left { animation: slideWinnerLeft 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
+        @keyframes slideWinnerLeft { to { transform: translateX(-415px); } }
+        .loser-exit-left { animation: exitLeft 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
+        @keyframes exitLeft { to { transform: translateX(-150%) scale(0.8); opacity: 0; filter: blur(8px); } }
+        .loser-exit-right { animation: exitRight 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
+        @keyframes exitRight { to { transform: translateX(150%) scale(0.8); opacity: 0; filter: blur(8px); } }
+        .new-challenger-in { animation: challengerIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+        @keyframes challengerIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* 標籤與資訊 */
+        .flag-tag { position: absolute; top: 20px; left: 20px; font-size: 2.5rem; z-index: 5; text-shadow: 0 0 10px #fff; }
+        .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 15px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 80%); text-align: left; }
+        .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; }
+        .intro-text { font-size: 0.85rem; color: var(--neon-main); font-weight: bold; }
+
+        /* --- FOOTER --- */
+        .promo-footer { background: var(--glass); border-top: 2px solid var(--neon-main); padding: 20px 5% 15px; display: flex; flex-direction: column; align-items: center; z-index: 100; text-align: center; }
+        .promo-row-top { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .promo-copy-wrap { display: flex; align-items: center; background: #000; padding: 4px 4px 4px 20px; border: 1px solid #444; border-radius: 4px; }
+        .promo-code { font-size: 1.5rem; font-weight: 900; letter-spacing: 3px; color: #fff; font-family: 'Bebas Neue', sans-serif; margin-right: 15px; }
+        .promo-btn { background: var(--neon-main); color: #000; border: none; padding: 8px 20px; font-weight: 900; cursor: pointer; transition: 0.3s; }
+        .btn-register-footer { width: 100%; max-width: 500px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 10px; font-weight: 900; font-size: 1.3rem; letter-spacing: 8px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; }
+        .btn-register-footer:hover { background: var(--neon-main); color: #000; box-shadow: 0 0 25px var(--neon-main); }
+        .platform-declare-wrap { display: flex; align-items: center; justify-content: center; gap: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; font-size: 1.1rem; font-weight: 900; }
+        .footer-logo-small { height: 18px; }
+
+        @media (max-width: 900px) {
+            body { overflow-y: auto; height: auto; }
+            .babe-card { width: 300px; height: 300px; }
+            .instruction-main { font-size: 1.8rem; }
+            .versus-module { flex-direction: column; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-background-stage"><div class="page-background-image"></div></div>
+
+    <header class="top-header">
+        <div class="logo-row">
+            <img src="https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/SWAG-Logo-White-1200.png" class="logo-img">
+            <span class="small-title">x Jack 異國遊</span>
+        </div>
+    </header>
+
+    <main class="main-pk-stage" id="pkStageContainer">
+        <div class="instruction-main">二選一挑出你的心儀直播主</div>
+        <div class="global-hook">上千位來自全世界優質直播主 24HR 線上等你</div>
+        <h2 class="pk-sub-header" id="pkHeader">今晚，誰是你的嚮導？</h2>
+        
+        <div class="versus-module" id="pkStage">
+            <div class="babe-card" id="card0" onclick="makeChoice(0)">
+                <div class="flag-tag" id="flag0"></div>
+                <img id="img0">
+                <div class="info-panel"><div class="name-meta" id="name0"></div><div class="intro-text" id="intro0"></div></div>
+            </div>
+            <div class="vs-sign" id="vsSign">VS</div>
+            <div class="babe-card" id="card1" onclick="makeChoice(1)">
+                <div class="flag-tag" id="flag1"></div>
+                <img id="img1">
+                <div class="info-panel"><div class="name-meta" id="name1"></div><div class="intro-text" id="intro1"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="promo-footer">
+        <h3 style="font-size:1.4rem; color:var(--neon-light); margin-bottom:8px;">Jack 異國遊粉絲專屬優惠活動</h3>
+        <p style="font-size:1.15rem; margin-bottom:15px;">解鎖全球誘惑，新用戶註冊輸入專屬代碼並手機綁定，領取 <b>2000 鑽石</b>。</p>
+        <div class="promo-row-top">
+            <div class="promo-copy-wrap">
+                <span class="promo-code" id="pCode">1212HAPPYTALK</span>
+                <button class="promo-btn" onclick="copyCode()">一鍵複製領取</button>
+            </div>
+            <span style="font-size:0.85rem; background:var(--gold); color:#000; padding:3px 10px; font-weight:900;">限量 200 位</span>
+        </div>
+        <button class="btn-register-footer" onclick="openLiveroom()">馬上去註冊</button>
+        <div class="platform-declare-wrap">
+            <img src="https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/SWAG-Logo-White-1200.png" class="footer-logo-small">
+            <span>亞洲最大成人直播平台</span> | <span style="color:var(--gold)">未滿 18 歲請勿進入</span>
+        </div>
+    </footer>
+
+    <script>
+        const babes = [
+            { name: "小映", flag: "🇹🇼", intro: "性感健身模特", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E6%98%A0.jpg" },
+            { name: "葡萄", flag: "🇹🇼", intro: "溫柔氣質好相處", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E8%91%A1%E8%90%84.jpg" }, // 假設原葡萄圖檔可用
+            { name: "娃娃", flag: "🇹🇼", intro: "清純大尺反差", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%A8%83%E5%A8%83.jpg" },
+            { name: "小甜馨", flag: "🇹🇼", intro: "真誠最溫柔", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E7%94%9C%E9%A6%A8.jpg" },
+            { name: "柚柚", flag: "🇨🇳", intro: "大眼氣質美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%9F%9A%E6%9F%9A.jpg" },
+            { name: "陸梨", flag: "🇭🇰", intro: "超高顏值女神", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E9%99%B8%E6%A2%A8.jpg" }, // 假設原陸梨圖檔可用
+            { name: "Venus 維納斯", flag: "🇭🇰", intro: "正點香港美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Venus%20%E7%B6%AD%E7%B4%8D%E6%96%AF.jpg" },
+            { name: "MacyChanHK", flag: "🇭🇰", intro: "喜歡多人運動", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/MacyChanHK.jpg" },
+            { name: "Sweet Katty", flag: "🇪🇺", intro: "超正東歐主播", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/sweetkatty.jpg" },
+            { name: "Aryana", flag: "🇺🇸", intro: "明星顏值", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Aryana.jpg" },
+            { name: "小珍珠", flag: "🇨🇳", intro: "誘惑小可愛", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E7%8F%8D%E7%8F%A0.jpg" },
+            { name: "水蜜桃", flag: "🇨🇳", intro: "白皙貌美大長腿", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%B0%B4%E8%9C%9C%E6%A1%83.jpg" },
+            { name: "漢娜", flag: "🇹🇼", intro: "校花女大生", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%BC%A2%E5%A8%9C.jpg" },
+            { name: "Norahoss", flag: "🇪🇺", intro: "北歐甜心", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/norahoss.jpg" },
+            { name: "Senzuality", flag: "🇪🇺", intro: "反差感超大", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/senzuality.jpg" },
+            { name: "AdryHprcy", flag: "🇺🇸", intro: "性感寶貝", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/adryhprcybylovicz.jpg" },
+            { name: "凱希", flag: "🇹🇼", intro: "氣質甜心", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%87%B1%E5%B8%8C.jpg" },
+            { name: "向日葵", flag: "🇹🇼", intro: "陽光女孩", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%90%91%E6%97%A5%E8%91%B5.jpg" }
+        ];
+
+        let pool = [...babes].sort(() => Math.random() - 0.5); 
+        let currentChoice = [pool.pop(), pool.pop()]; 
+        let isAnimating = false; 
+
+        function renderRound() {
+            currentChoice.forEach((b, i) => {
+                document.getElementById(`flag${i}`).innerText = b.flag;
+                document.getElementById(`img${i}`).src = b.img;
+                document.getElementById(`name${i}`).innerText = b.name;
+                document.getElementById(`intro${i}`).innerText = `「 ${b.intro} 」`;
+            });
+        }
+
+        function makeChoice(idx) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const card0 = document.getElementById('card0');
+            const card1 = document.getElementById('card1');
+            const vsSign = document.getElementById('vsSign');
+            const winner = currentChoice[idx];
+            
+            if (pool.length > 0) {
+                const challenger = pool.pop();
+
+                if (idx === 0) {
+                    card1.classList.add('loser-exit-right');
+                } else {
+                    card0.classList.add('loser-exit-left');
+                    card1.classList.add('winner-move-to-left');
+                }
+                vsSign.style.opacity = '0';
+
+                setTimeout(() => {
+                    card0.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
+                    card1.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
+                    currentChoice = [winner, challenger];
+                    renderRound();
+                    card1.classList.add('new-challenger-in');
+                    vsSign.style.opacity = '1';
+                    setTimeout(() => { card1.classList.remove('new-challenger-in'); isAnimating = false; }, 600);
+                }, 600);
+            } else {
+                showFinalist(winner);
+            }
+        }
+
+        function showFinalist(winner) {
+            document.querySelector('.instruction-main').style.display = 'none';
+            document.querySelector('.global-hook').style.display = 'none';
+            document.getElementById('pkHeader').style.display = 'none'; 
+            
+            document.getElementById('pkStage').innerHTML = `
+                <div class="winner-stage" style="animation: popInWinner 0.6s forwards;">
+                    <div class="babe-card" style="width:420px;height:420px;border-color:var(--neon-main);box-shadow:0 0 80px var(--neon-glow);">
+                        <div class="flag-tag" style="top: 20px; left: 20px;">${winner.flag}</div>
+                        <div style="position:absolute;top:15px;right:15px;background:var(--gold);color:#000;padding:5px 15px;border-radius:20px;font-weight:900">👑 Winner</div>
+                        <img src="${winner.img}" style="opacity:1">
+                        <div class="info-panel"><div class="name-meta" style="font-size:2.2rem">${winner.name}</div><div class="intro-text">今晚，就決定是你了。</div></div>
+                    </div>
+                    <button class="btn-register-footer" style="margin-top:30px; background:var(--neon-main); color:#000; box-shadow:0 0 30px var(--neon-glow);" onclick="openLiveroom()">進入私密直播間</button>
+                </div>
+            `;
+        }
+
+        function openLiveroom() { window.location.href = "https://swag.live/"; }
+        function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("密碼已複製！"); }
+        renderRound();
+    </script>
+</body>
+</html>
