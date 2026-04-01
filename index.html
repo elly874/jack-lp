@@ -1,8 +1,23 @@
+手機版的排版挑戰在於螢幕寬度有限，且用戶習慣由上而下的滑動操作。目前的橫向 `VS` 在手機上會讓圖片縮得太小，或者產生左右溢出。
+
+我針對**手機版（Mobile）**進行了以下專屬優化：
+
+### 📱 手機版優化重點：
+1.  **直向擂台佈局**：在手機螢幕下，兩張主播卡片會改為**上下排列**，`VS` 標誌移動到兩圖中間。這樣圖片可以維持較大的尺寸，細節更清晰。
+2.  **觸控友善（Touch Friendly）**：加大了卡片點擊後的縮放反饋，並確保 Footer 在小螢幕上不會重疊。
+3.  **流暢的上下守擂動態**：選中主播後，贏家會**向上滑動**填補擂主位，新挑戰者則從**底部彈入**，符合手機的操作直覺。
+4.  **字體與間距微調**：縮小了標題與副標題的邊距，確保在不捲動的情況下能看到更多內容。
+
+---
+
+### 🎨 優化後的完整代碼：
+
+```html
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SWAG x Jack | EXOTIC NEON NIGHT</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:ital,wght@1,900&family=Bebas+Neue&family=Noto+Sans+TC:wght@900&display=swap" rel="stylesheet">
     <style>
@@ -16,98 +31,105 @@
             --ms-font: "Microsoft YaHei", "微軟雅黑", sans-serif;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
             background-color: var(--bg-deep); color: #fff; font-family: var(--ms-font);
-            line-height: 1.6; width: 100vw; height: 100vh;
-            display: flex; flex-direction: column; overflow: hidden;
+            line-height: 1.6; width: 100vw; min-height: 100vh;
+            display: flex; flex-direction: column; overflow-x: hidden;
         }
 
-        /* --- 背景動態優化：增加 will-change 減少卡頓 --- */
+        /* --- 背景動態 --- */
         .page-background-stage { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: -2; pointer-events: none; }
         .page-background-image {
             position: absolute; bottom: -40%; left: -40%; width: 180%; height: 180%;
             background-image: url('https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Creator_bg.jpg'); 
             background-size: cover; background-position: center;
-            opacity: 0.65; 
-            animation: bg-cinematic-slide 40s ease-in-out infinite;
-            will-change: transform;
-            transform: translateZ(0);
+            opacity: 0.65; animation: bg-cinematic-slide 40s ease-in-out infinite;
+            will-change: transform; transform: translateZ(0);
         }
-        @keyframes bg-cinematic-slide { 0% { transform: translate(0%, 0%) translateZ(0); } 50% { transform: translate(10%, -10%) translateZ(0); } 100% { transform: translate(0%, 0%) translateZ(0); } }
+        @keyframes bg-cinematic-slide { 0% { transform: translate(0%, 0%); } 50% { transform: translate(5%, -5%); } 100% { transform: translate(0%, 0%); } }
 
         /* --- Header --- */
-        .top-header { padding-top: 40px; text-align: center; z-index: 10; }
-        .logo-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
-        .logo-img { height: 38px; filter: drop-shadow(0 0 10px var(--neon-main)); }
-        .small-title { font-size: 1.8rem; font-weight: 900; text-shadow: 0 0 10px var(--neon-main); }
+        .top-header { padding: 30px 15px 10px; text-align: center; z-index: 10; }
+        .logo-row { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .logo-img { height: 30px; filter: drop-shadow(0 0 10px var(--neon-main)); }
+        .small-title { font-size: 1.5rem; font-weight: 900; text-shadow: 0 0 10px var(--neon-main); }
 
         /* --- 主舞台 --- */
-        .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; }
-        .instruction-main { font-family: 'Noto Sans TC', sans-serif; font-size: 2.8rem; font-weight: 900; text-shadow: 0 0 5px #fff, 0 0 20px var(--neon-main); margin-bottom: 5px; }
-        .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 2px; margin-bottom: 10px; }
-        .pk-sub-header { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.5rem; letter-spacing: 6px; color: var(--neon-main); margin-bottom: 35px; }
+        .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 10px 15px 30px; }
+        .instruction-main { font-family: 'Noto Sans TC', sans-serif; font-size: 2.2rem; font-weight: 900; text-shadow: 0 0 5px #fff, 0 0 20px var(--neon-main); margin-bottom: 5px; text-align: center; }
+        .global-hook { font-size: 0.95rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 8px; text-align: center; opacity: 0.9; }
+        .pk-sub-header { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.2rem; letter-spacing: 4px; color: var(--neon-main); margin-bottom: 25px; text-align: center; }
 
-        .versus-module { display: flex; align-items: center; justify-content: center; gap: 35px; width: 100%; max-width: 950px; position: relative; }
+        /* PK 模組：預設 PC 橫向 */
+        .versus-module { display: flex; align-items: center; justify-content: center; gap: 30px; width: 100%; max-width: 1000px; position: relative; }
         
-        /* babe-card 增加硬體加速屬性 */
         .babe-card { 
-            flex: none; width: 380px; height: 380px; background: #0a0a0a; border: 2px solid #222; 
+            flex: none; width: 350px; height: 350px; background: #0a0a0a; border: 2px solid #222; 
             position: relative; cursor: pointer; overflow: hidden; 
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.5s ease;
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s ease;
             animation: card-wait-pulse 3s infinite ease-in-out; 
-            will-change: transform, opacity;
-            transform: translateZ(0);
+            will-change: transform; transform: translateZ(0);
         }
-        @keyframes card-wait-pulse { 0%, 100% { transform: scale(1) translateZ(0); border-color: #222; } 50% { transform: scale(1.02) translateZ(0); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
+        @keyframes card-wait-pulse { 0%, 100% { transform: scale(1); border-color: #222; } 50% { transform: scale(1.02); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
         
-        .babe-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transform: translateZ(0); }
-        .babe-card:hover { border-color: var(--neon-main); box-shadow: 0 0 40px var(--neon-glow); transform: scale(1.03) translateZ(0); z-index: 10; animation: none; }
+        .babe-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        .babe-card:active { transform: scale(0.95); } /* 手機按壓反饋 */
 
-        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); transition: opacity 0.3s; }
+        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; }
 
-        /* PK 動畫優化：使用 3D Transform 觸發顯卡 */
-        .winner-move-to-left { animation: slideWinnerLeft 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
-        @keyframes slideWinnerLeft { to { transform: translateX(-415px) translateZ(0); } }
-        
-        .loser-exit-left { animation: exitLeft 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
-        @keyframes exitLeft { to { transform: translateX(-150%) scale(0.8) translateZ(0); opacity: 0; filter: blur(8px); } }
-        
-        .loser-exit-right { animation: exitRight 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
-        @keyframes exitRight { to { transform: translateX(150%) scale(0.8) translateZ(0); opacity: 0; filter: blur(8px); } }
-        
-        .new-challenger-in { animation: challengerIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-        @keyframes challengerIn { from { transform: translateX(100px) translateZ(0); opacity: 0; } to { transform: translateX(0) translateZ(0); opacity: 1; } }
+        /* --- 手機版專屬排版 (RWD) --- */
+        @media (max-width: 800px) {
+            .versus-module { flex-direction: column; gap: 15px; }
+            .babe-card { width: 85vw; height: 85vw; max-width: 320px; max-height: 320px; }
+            .vs-sign { font-size: 3rem; margin: -10px 0; }
+            .instruction-main { font-size: 1.6rem; }
+            
+            /* 手機版動畫：贏家向上滑動 */
+            .winner-move-to-left { animation: slideWinnerUp 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
+            @keyframes slideWinnerUp { to { transform: translateY(-335px) scale(0.9); opacity: 0.5; } }
+            
+            /* 手機版動畫：輸家縮小淡出 */
+            .loser-exit-left, .loser-exit-right { animation: exitMobile 0.6s ease forwards !important; }
+            @keyframes exitMobile { to { transform: scale(0.5); opacity: 0; filter: blur(10px); } }
+            
+            .new-challenger-in { animation: challengerUpIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+            @keyframes challengerUpIn { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        /* --- 勝利者呈現 --- */
-        .winner-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        @keyframes popInWinner { from { transform: scale(0.7) translateZ(0); opacity: 0; } to { transform: scale(1) translateZ(0); opacity: 1; } }
+            .platform-declare-wrap { font-size: 0.75rem; gap: 5px; flex-wrap: wrap; }
+            .promo-row-top { gap: 8px; }
+            .promo-code { font-size: 1.3rem; }
+        }
 
-        /* --- 標籤與資訊 --- */
-        .flag-tag { position: absolute; top: 20px; left: 20px; font-size: 2.5rem; z-index: 5; text-shadow: 0 0 10px #fff; }
-        .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 15px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 80%); text-align: left; }
-        .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; }
-        .intro-text { font-size: 0.85rem; color: var(--neon-main); font-weight: bold; }
+        /* PC 版橫向動畫 */
+        @media (min-width: 801px) {
+            .winner-move-to-left { animation: slideWinnerLeft 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
+            @keyframes slideWinnerLeft { to { transform: translateX(-380px); } }
+            .loser-exit-right { animation: exitRight 0.6s forwards !important; }
+            @keyframes exitRight { to { transform: translateX(150px); opacity: 0; filter: blur(8px); } }
+            .loser-exit-left { animation: exitLeft 0.6s forwards !important; }
+            @keyframes exitLeft { to { transform: translateX(-150px); opacity: 0; filter: blur(8px); } }
+        }
+
+        /* 標籤與資訊 */
+        .flag-tag { position: absolute; top: 15px; left: 15px; font-size: 2rem; z-index: 5; text-shadow: 0 0 10px #fff; }
+        .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 12px; background: linear-gradient(transparent, rgba(0,0,0,0.9) 70%); text-align: left; }
+        .name-meta { font-size: 1.4rem; font-weight: 900; color: #fff; }
+        .intro-text { font-size: 0.8rem; color: var(--neon-main); font-weight: bold; }
 
         /* --- FOOTER --- */
-        .promo-footer { background: var(--glass); border-top: 2px solid var(--neon-main); padding: 20px 5% 15px; display: flex; flex-direction: column; align-items: center; z-index: 100; text-align: center; }
-        .promo-row-top { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-        .promo-copy-wrap { display: flex; align-items: center; background: #000; padding: 4px 4px 4px 20px; border: 1px solid #444; border-radius: 4px; }
-        .promo-code { font-size: 1.5rem; font-weight: 900; letter-spacing: 3px; color: #fff; font-family: 'Bebas Neue', sans-serif; margin-right: 15px; }
-        .promo-btn { background: var(--neon-main); color: #000; border: none; padding: 8px 20px; font-weight: 900; cursor: pointer; transition: 0.3s; }
-        .btn-register-footer { width: 100%; max-width: 500px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 10px; font-weight: 900; font-size: 1.3rem; letter-spacing: 8px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; }
-        .btn-register-footer:hover { background: var(--neon-main); color: #000; box-shadow: 0 0 25px var(--neon-main); }
-        .platform-declare-wrap { display: flex; align-items: center; justify-content: center; gap: 15px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; font-size: 1.1rem; font-weight: 900; }
-        .footer-logo-small { height: 18px; }
+        .promo-footer { background: var(--glass); border-top: 2px solid var(--neon-main); padding: 20px 15px; display: flex; flex-direction: column; align-items: center; z-index: 100; text-align: center; margin-top: auto; }
+        .promo-row-top { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; justify-content: center; }
+        .promo-copy-wrap { display: flex; align-items: center; background: #000; padding: 4px 4px 4px 15px; border: 1px solid #444; border-radius: 4px; }
+        .promo-code { font-size: 1.4rem; font-weight: 900; letter-spacing: 2px; color: #fff; font-family: 'Bebas Neue', sans-serif; margin-right: 10px; }
+        .promo-btn { background: var(--neon-main); color: #000; border: none; padding: 6px 15px; font-weight: 900; cursor: pointer; font-size: 0.85rem; }
+        .btn-register-footer { width: 100%; max-width: 400px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 12px; font-weight: 900; font-size: 1.2rem; letter-spacing: 5px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; }
+        .platform-declare-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; font-size: 0.9rem; font-weight: 900; }
+        .footer-logo-small { height: 16px; }
 
-        @media (max-width: 900px) {
-            body { overflow-y: auto; height: auto; }
-            .babe-card { width: 300px; height: 300px; }
-            .versus-module { flex-direction: column; gap: 20px; }
-            .winner-move-to-left { animation: slideWinnerUp 0.6s forwards !important; }
-            @keyframes slideWinnerUp { to { transform: translateY(-320px) translateZ(0); } }
-        }
+        .winner-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: popIn 0.5s ease-out forwards; }
+        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
@@ -122,8 +144,8 @@
     </header>
 
     <main class="main-pk-stage" id="pkStageContainer">
-        <div class="instruction-main">二選一挑出你的心儀直播主</div>
-        <div class="global-hook">上千位來自全世界優質直播主 24HR 線上等你</div>
+        <div class="instruction-main">挑出你的心儀直播主</div>
+        <div class="global-hook">上千位全球優質直播主 24HR 在線</div>
         <h2 class="pk-sub-header" id="pkHeader">今晚，誰是你的嚮導？</h2>
         
         <div class="versus-module" id="pkStage">
@@ -142,30 +164,28 @@
     </main>
 
     <footer class="promo-footer">
-        <h3 style="font-size:1.4rem; color:var(--neon-light); margin-bottom:8px;">Jack 異國遊粉絲專屬優惠活動</h3>
-        <p style="font-size:1.15rem; margin-bottom:15px;">解鎖全球誘惑，新用戶註冊輸入專屬代碼並手機綁定，領取 <b>2000 鑽石</b>。</p>
         <div class="promo-row-top">
             <div class="promo-copy-wrap">
                 <span class="promo-code" id="pCode">1212HAPPYTALK</span>
-                <button class="promo-btn" onclick="copyCode()">一鍵複製領取</button>
+                <button class="promo-btn" onclick="copyCode()">複製</button>
             </div>
-            <span style="font-size:0.85rem; background:var(--gold); color:#000; padding:3px 10px; font-weight:900;">限量 200 位</span>
+            <span style="font-size:0.75rem; background:var(--gold); color:#000; padding:2px 8px; font-weight:900; border-radius:2px;">限量 200 位</span>
         </div>
         <button class="btn-register-footer" onclick="openLiveroom()">馬上去註冊</button>
         <div class="platform-declare-wrap">
             <img src="https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/SWAG-Logo-White-1200.png" class="footer-logo-small">
-            <span>亞洲最大成人直播平台</span> | <span style="color:var(--gold)">未滿 18 歲請勿進入</span>
+            <span>亞洲最大成人平台</span> | <span style="color:var(--gold)">未滿 18 歲請勿進入</span>
         </div>
     </footer>
 
     <script>
         const babes = [
             { name: "小映", flag: "🇹🇼", intro: "性感健身模特", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E6%98%A0.jpg" },
-            { name: "葡萄", flag: "🇹🇼", intro: "溫柔氣質好相處", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E8%91%A1%E8%90%84.jpg" },
+            { name: "向日葵", flag: "🇹🇼", intro: "陽光女孩", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%90%91%E6%97%A5%E8%91%B5.jpg" },
             { name: "娃娃", flag: "🇹🇼", intro: "清純大尺反差", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%A8%83%E5%A8%83.jpg" },
-            { name: "蘿拉鼻鼻", flag: "🇹🇼", intro: "純約會私訊", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E8%98%BF%E6%8B%89%E9%BC%BB%E9%BC%BB.jpg" },
+            { name: "小甜馨", flag: "🇹🇼", intro: "真誠最溫柔", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E7%94%9C%E9%A6%A8.jpg" },
             { name: "柚柚", flag: "🇨🇳", intro: "大眼氣質美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%9F%9A%E6%9F%9A.jpg" },
-            { name: "陸梨", flag: "🇭🇰", intro: "超高顏值女神", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E9%99%B8%E6%A2%A8.jpg" },
+            { name: "凱希", flag: "🇹🇼", intro: "氣質甜心", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%87%B1%E5%B8%8C.jpg" },
             { name: "Venus 維納斯", flag: "🇭🇰", intro: "正點香港美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Venus%20%E7%B6%AD%E7%B4%8D%E6%96%AF.jpg" },
             { name: "MacyChanHK", flag: "🇭🇰", intro: "喜歡多人運動", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/MacyChanHK.jpg" },
             { name: "Sweet Katty", flag: "🇪🇺", intro: "超正東歐主播", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/sweetkatty.jpg" },
@@ -175,16 +195,13 @@
             { name: "漢娜", flag: "🇹🇼", intro: "校花女大生", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%BC%A2%E5%A8%9C.jpg" },
             { name: "Norahoss", flag: "🇪🇺", intro: "北歐甜心", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/norahoss.jpg" },
             { name: "Senzuality", flag: "🇪🇺", intro: "反差感超大", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/senzuality.jpg" },
-            { name: "AdryHprcy", flag: "🇺🇸", intro: "性感寶貝", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/adryhprcybylovicz.jpg" },
-            { name: "凱希", flag: "🇹🇼", intro: "氣質甜心", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%87%B1%E5%B8%8C.jpg" },
-            { name: "向日葵", flag: "🇹🇼", intro: "陽光女孩", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%90%91%E6%97%A5%E8%91%B5.jpg" }
+            { name: "AdryHprcy", flag: "🇺🇸", intro: "性感寶貝", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/adryhprcybylovicz.jpg" }
         ];
 
         let pool = [...babes].sort(() => Math.random() - 0.5); 
         let currentChoice = [pool.pop(), pool.pop()]; 
         let isAnimating = false; 
 
-        // 圖片預載函數：解決 Lag 的關鍵
         function preloadNextImages() {
             pool.slice(-2).forEach(b => {
                 const img = new Image();
@@ -195,15 +212,12 @@
         function renderRound() {
             currentChoice.forEach((b, i) => {
                 const imgEl = document.getElementById(`img${i}`);
-                // 只有在真的需要換圖時才換，減少解碼壓力
-                if (imgEl.src !== b.img) {
-                    imgEl.src = b.img;
-                }
+                if (imgEl.src !== b.img) imgEl.src = b.img;
                 document.getElementById(`flag${i}`).innerText = b.flag;
                 document.getElementById(`name${i}`).innerText = b.name;
                 document.getElementById(`intro${i}`).innerText = `「 ${b.intro} 」`;
             });
-            preloadNextImages(); // 每次渲染後預載下一張
+            preloadNextImages();
         }
 
         function makeChoice(idx) {
@@ -217,8 +231,6 @@
             
             if (pool.length > 0) {
                 const challenger = pool.pop();
-
-                // 執行動畫
                 if (idx === 0) {
                     card1.classList.add('loser-exit-right');
                 } else {
@@ -227,18 +239,13 @@
                 }
                 vsSign.style.opacity = '0';
 
-                // 等待動畫結束再換圖
                 setTimeout(() => {
                     card0.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
                     card1.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
-                    
-                    // 核心邏輯：將贏家放回左邊，挑戰者放右邊
                     currentChoice = [winner, challenger];
                     renderRound();
-                    
                     card1.classList.add('new-challenger-in');
                     vsSign.style.opacity = '1';
-
                     setTimeout(() => {
                         card1.classList.remove('new-challenger-in');
                         isAnimating = false;
@@ -253,25 +260,24 @@
             document.querySelector('.instruction-main').style.display = 'none';
             document.querySelector('.global-hook').style.display = 'none';
             document.getElementById('pkHeader').style.display = 'none'; 
-            
             document.getElementById('pkStage').innerHTML = `
-                <div class="winner-stage" style="animation: popInWinner 0.6s forwards;">
-                    <div class="babe-card" style="width:420px;height:420px;border-color:var(--neon-main);box-shadow:0 0 80px var(--neon-glow);">
-                        <div class="flag-tag" style="top: 20px; left: 20px;">${winner.flag}</div>
-                        <div style="position:absolute;top:15px;right:15px;background:var(--gold);color:#000;padding:5px 15px;border-radius:20px;font-weight:900">👑 Winner</div>
+                <div class="winner-stage">
+                    <div class="babe-card" style="width:300px;height:300px;border-color:var(--neon-main);box-shadow:0 0 50px var(--neon-glow);">
+                        <div class="flag-tag" style="top: 15px; left: 15px;">${winner.flag}</div>
+                        <div style="position:absolute;top:10px;right:10px;background:var(--gold);color:#000;padding:4px 12px;border-radius:20px;font-weight:900;font-size:0.7rem;">👑 Winner</div>
                         <img src="${winner.img}" style="opacity:1">
-                        <div class="info-panel"><div class="name-meta" style="font-size:2.2rem">${winner.name}</div><div class="intro-text">今晚，就決定是你了。</div></div>
+                        <div class="info-panel"><div class="name-meta">${winner.name}</div><div class="intro-text">今晚就決定是你了。</div></div>
                     </div>
-                    <button class="btn-register-footer" style="margin-top:30px; background:var(--neon-main); color:#000; box-shadow:0 0 30px var(--neon-glow);" onclick="openLiveroom()">進入私密直播間</button>
+                    <button class="btn-register-footer" style="margin-top:25px; background:var(--neon-main); color:#000; box-shadow:0 0 30px var(--neon-glow);" onclick="openLiveroom()">進入私密直播間</button>
                 </div>
             `;
         }
 
         function openLiveroom() { window.location.href = "https://swag.live/"; }
-        function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("密碼已複製！"); }
+        function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("代碼已複製！"); }
         
-        preloadNextImages(); // 初始預載
         renderRound();
     </script>
 </body>
 </html>
+```
