@@ -24,15 +24,18 @@
             display: flex; flex-direction: column; overflow: hidden;
         }
 
-        /* --- 背景滑動 (65% 亮度) --- */
+        /* --- 背景動態優化：增加 will-change 減少卡頓 --- */
         .page-background-stage { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; overflow: hidden; z-index: -2; pointer-events: none; }
         .page-background-image {
             position: absolute; bottom: -40%; left: -40%; width: 180%; height: 180%;
             background-image: url('https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Creator_bg.jpg'); 
             background-size: cover; background-position: center;
-            opacity: 0.65; animation: bg-cinematic-slide 40s ease-in-out infinite;
+            opacity: 0.65; 
+            animation: bg-cinematic-slide 40s ease-in-out infinite;
+            will-change: transform;
+            transform: translateZ(0);
         }
-        @keyframes bg-cinematic-slide { 0% { transform: translate(0%, 0%); } 50% { transform: translate(10%, -10%); } 100% { transform: translate(0%, 0%); } }
+        @keyframes bg-cinematic-slide { 0% { transform: translate(0%, 0%) translateZ(0); } 50% { transform: translate(10%, -10%) translateZ(0); } 100% { transform: translate(0%, 0%) translateZ(0); } }
 
         /* --- Header --- */
         .top-header { padding-top: 40px; text-align: center; z-index: 10; }
@@ -48,30 +51,40 @@
 
         .versus-module { display: flex; align-items: center; justify-content: center; gap: 35px; width: 100%; max-width: 950px; position: relative; }
         
+        /* babe-card 增加硬體加速屬性 */
         .babe-card { 
             flex: none; width: 380px; height: 380px; background: #0a0a0a; border: 2px solid #222; 
             position: relative; cursor: pointer; overflow: hidden; 
             transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.5s ease;
             animation: card-wait-pulse 3s infinite ease-in-out; 
+            will-change: transform, opacity;
+            transform: translateZ(0);
         }
-        @keyframes card-wait-pulse { 0%, 100% { transform: scale(1); border-color: #222; } 50% { transform: scale(1.02); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
+        @keyframes card-wait-pulse { 0%, 100% { transform: scale(1) translateZ(0); border-color: #222; } 50% { transform: scale(1.02) translateZ(0); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
         
-        .babe-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
-        .babe-card:hover { border-color: var(--neon-main); box-shadow: 0 0 40px var(--neon-glow); transform: scale(1.03); z-index: 10; animation: none; }
+        .babe-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transform: translateZ(0); }
+        .babe-card:hover { border-color: var(--neon-main); box-shadow: 0 0 40px var(--neon-glow); transform: scale(1.03) translateZ(0); z-index: 10; animation: none; }
 
         .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 5rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); transition: opacity 0.3s; }
 
-        /* PK 動畫 */
+        /* PK 動畫優化：使用 3D Transform 觸發顯卡 */
         .winner-move-to-left { animation: slideWinnerLeft 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
-        @keyframes slideWinnerLeft { to { transform: translateX(-415px); } }
+        @keyframes slideWinnerLeft { to { transform: translateX(-415px) translateZ(0); } }
+        
         .loser-exit-left { animation: exitLeft 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
-        @keyframes exitLeft { to { transform: translateX(-150%) scale(0.8); opacity: 0; filter: blur(8px); } }
+        @keyframes exitLeft { to { transform: translateX(-150%) scale(0.8) translateZ(0); opacity: 0; filter: blur(8px); } }
+        
         .loser-exit-right { animation: exitRight 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
-        @keyframes exitRight { to { transform: translateX(150%) scale(0.8); opacity: 0; filter: blur(8px); } }
+        @keyframes exitRight { to { transform: translateX(150%) scale(0.8) translateZ(0); opacity: 0; filter: blur(8px); } }
+        
         .new-challenger-in { animation: challengerIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-        @keyframes challengerIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes challengerIn { from { transform: translateX(100px) translateZ(0); opacity: 0; } to { transform: translateX(0) translateZ(0); opacity: 1; } }
 
-        /* 標籤與資訊 */
+        /* --- 勝利者呈現 --- */
+        .winner-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        @keyframes popInWinner { from { transform: scale(0.7) translateZ(0); opacity: 0; } to { transform: scale(1) translateZ(0); opacity: 1; } }
+
+        /* --- 標籤與資訊 --- */
         .flag-tag { position: absolute; top: 20px; left: 20px; font-size: 2.5rem; z-index: 5; text-shadow: 0 0 10px #fff; }
         .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 15px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 80%); text-align: left; }
         .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; }
@@ -91,8 +104,9 @@
         @media (max-width: 900px) {
             body { overflow-y: auto; height: auto; }
             .babe-card { width: 300px; height: 300px; }
-            .instruction-main { font-size: 1.8rem; }
             .versus-module { flex-direction: column; gap: 20px; }
+            .winner-move-to-left { animation: slideWinnerUp 0.6s forwards !important; }
+            @keyframes slideWinnerUp { to { transform: translateY(-320px) translateZ(0); } }
         }
     </style>
 </head>
@@ -147,11 +161,11 @@
     <script>
         const babes = [
             { name: "小映", flag: "🇹🇼", intro: "性感健身模特", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E6%98%A0.jpg" },
-            { name: "葡萄", flag: "🇹🇼", intro: "溫柔氣質好相處", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E8%91%A1%E8%90%84.jpg" }, // 假設原葡萄圖檔可用
+            { name: "葡萄", flag: "🇹🇼", intro: "溫柔氣質好相處", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E8%91%A1%E8%90%84.jpg" },
             { name: "娃娃", flag: "🇹🇼", intro: "清純大尺反差", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%A8%83%E5%A8%83.jpg" },
-            { name: "小甜馨", flag: "🇹🇼", intro: "真誠最溫柔", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E7%94%9C%E9%A6%A8.jpg" },
+            { name: "蘿拉鼻鼻", flag: "🇹🇼", intro: "純約會私訊", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E8%98%BF%E6%8B%89%E9%BC%BB%E9%BC%BB.jpg" },
             { name: "柚柚", flag: "🇨🇳", intro: "大眼氣質美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%9F%9A%E6%9F%9A.jpg" },
-            { name: "陸梨", flag: "🇭🇰", intro: "超高顏值女神", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E9%99%B8%E6%A2%A8.jpg" }, // 假設原陸梨圖檔可用
+            { name: "陸梨", flag: "🇭🇰", intro: "超高顏值女神", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E9%99%B8%E6%A2%A8.jpg" },
             { name: "Venus 維納斯", flag: "🇭🇰", intro: "正點香港美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Venus%20%E7%B6%AD%E7%B4%8D%E6%96%AF.jpg" },
             { name: "MacyChanHK", flag: "🇭🇰", intro: "喜歡多人運動", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/MacyChanHK.jpg" },
             { name: "Sweet Katty", flag: "🇪🇺", intro: "超正東歐主播", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/sweetkatty.jpg" },
@@ -170,13 +184,26 @@
         let currentChoice = [pool.pop(), pool.pop()]; 
         let isAnimating = false; 
 
+        // 圖片預載函數：解決 Lag 的關鍵
+        function preloadNextImages() {
+            pool.slice(-2).forEach(b => {
+                const img = new Image();
+                img.src = b.img;
+            });
+        }
+
         function renderRound() {
             currentChoice.forEach((b, i) => {
+                const imgEl = document.getElementById(`img${i}`);
+                // 只有在真的需要換圖時才換，減少解碼壓力
+                if (imgEl.src !== b.img) {
+                    imgEl.src = b.img;
+                }
                 document.getElementById(`flag${i}`).innerText = b.flag;
-                document.getElementById(`img${i}`).src = b.img;
                 document.getElementById(`name${i}`).innerText = b.name;
                 document.getElementById(`intro${i}`).innerText = `「 ${b.intro} 」`;
             });
+            preloadNextImages(); // 每次渲染後預載下一張
         }
 
         function makeChoice(idx) {
@@ -191,6 +218,7 @@
             if (pool.length > 0) {
                 const challenger = pool.pop();
 
+                // 執行動畫
                 if (idx === 0) {
                     card1.classList.add('loser-exit-right');
                 } else {
@@ -199,14 +227,22 @@
                 }
                 vsSign.style.opacity = '0';
 
+                // 等待動畫結束再換圖
                 setTimeout(() => {
                     card0.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
                     card1.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
+                    
+                    // 核心邏輯：將贏家放回左邊，挑戰者放右邊
                     currentChoice = [winner, challenger];
                     renderRound();
+                    
                     card1.classList.add('new-challenger-in');
                     vsSign.style.opacity = '1';
-                    setTimeout(() => { card1.classList.remove('new-challenger-in'); isAnimating = false; }, 600);
+
+                    setTimeout(() => {
+                        card1.classList.remove('new-challenger-in');
+                        isAnimating = false;
+                    }, 600);
                 }, 600);
             } else {
                 showFinalist(winner);
@@ -233,6 +269,8 @@
 
         function openLiveroom() { window.location.href = "https://swag.live/"; }
         function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("密碼已複製！"); }
+        
+        preloadNextImages(); // 初始預載
         renderRound();
     </script>
 </body>
