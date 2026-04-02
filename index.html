@@ -87,7 +87,7 @@
         .flag-tag { position: absolute; top: 10px; left: 10px; font-size: 1.5rem; z-index: 5; }
         .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 75%); text-align: left; }
         
-        /* --- FOOTER 重建樣式 --- */
+        /* --- FOOTER --- */
         .promo-footer { 
             background: var(--glass); border-top: 2px solid var(--neon-main); 
             padding: 25px 15px 20px; display: flex; flex-direction: column; 
@@ -178,7 +178,7 @@
 
         <div class="progress-wrap" id="progressWrap">
             <div class="progress-container"><div class="progress-bar" id="pBar"></div></div>
-            <div class="progress-text" id="pText">Round 1 / 6</div>
+            <div class="progress-text" id="pText">ROUND 1 / 6</div>
         </div>
     </main>
 
@@ -222,7 +222,8 @@
         function updateProgress() {
             const percent = ((currentStep - 1) / totalSteps) * 100;
             document.getElementById('pBar').style.width = percent + '%';
-            document.getElementById('pText').innerText = currentStep === totalSteps ? "FINAL ROUND" : `STEP ${currentStep} / ${totalSteps}`;
+            // 修改：進度文字更換為 ROUND
+            document.getElementById('pText').innerText = currentStep === totalSteps ? "FINAL ROUND" : `ROUND ${currentStep} / ${totalSteps}`;
         }
 
         function renderRound() {
