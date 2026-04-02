@@ -76,40 +76,13 @@
             opacity: 0.9; transition: opacity 0.3s ease; 
         }
 
-        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; }
+        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; transition: opacity 0.3s; }
 
-        /* --- 強力動態特效類別 --- */
-        
-        /* 贏家慶祝動畫 (成功守擂或奪擂時觸發) */
-        .winner-pulse {
-            animation: winnerCelebrate 0.5s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards !important;
-            z-index: 12;
-        }
-        @keyframes winnerCelebrate {
-            0% { transform: scale(1); border-color: var(--gold); box-shadow: 0 0 50px var(--gold); }
-            50% { transform: scale(1.1); border-color: #fff; box-shadow: 0 0 80px var(--gold); }
-            100% { transform: scale(1); border-color: var(--gold); box-shadow: 0 0 30px var(--gold); }
-        }
-
-        /* 輸家向右噴飛 (當你選左邊時，右邊飛走) */
-        .loser-exit-right { animation: exitRightFast 0.5s ease-in forwards !important; }
-        @keyframes exitRightFast { to { transform: translateX(200px) scale(0.5) rotate(10deg); opacity: 0; filter: blur(10px); } }
-
-        /* 輸家向左噴飛 (當你選右邊時，左邊飛走) */
-        .loser-exit-left { animation: exitLeftFast 0.5s ease-in forwards !important; }
-        @keyframes exitLeftFast { to { transform: translateX(-200px) scale(0.5) rotate(-10deg); opacity: 0; filter: blur(10px); } }
-
-        /* 贏家奪擂 (右移左) */
-        .winner-to-throne { animation: slideToThrone 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
-        @keyframes slideToThrone { to { transform: translateX(calc(-100% - 20px)); } }
-
-        /* 新挑戰者進場 */
-        .challenger-in { animation: challengerAppear 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-        @keyframes challengerAppear { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        /* --- 佈局斷點 --- */
+        /* --- 位移邏輯 --- */
         @media (min-width: 801px) {
             .babe-card { flex: 0 0 350px; width: 350px; height: 350px; }
+            .winner-to-throne { animation: slideToThronePC 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
+            @keyframes slideToThronePC { to { transform: translateX(-370px); } }
         }
 
         @media (max-width: 800px) {
@@ -117,33 +90,33 @@
             .babe-card { flex: 0 0 calc(50vw - 12px); width: calc(50vw - 12px); aspect-ratio: 1/1; }
             .vs-sign { font-size: 2.2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; background: rgba(0,0,0,0.5); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
             .instruction-main { font-size: 1.6rem; }
-            /* 手機版奪擂動畫 */
-            @keyframes slideToThrone { to { transform: translateX(calc(-50vw + 2px)); } }
+            .winner-to-throne { animation: slideToThroneMob 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
+            @keyframes slideToThroneMob { to { transform: translateX(calc(-50vw + 2px)); } }
         }
 
+        /* 慶祝與淘汰 */
+        .winner-pulse { animation: winnerCelebrate 0.5s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards !important; z-index: 12; }
+        @keyframes winnerCelebrate { 0% { transform: scale(1); border-color: var(--gold); } 50% { transform: scale(1.1); border-color: #fff; box-shadow: 0 0 80px var(--gold); } 100% { transform: scale(1); border-color: var(--gold); } }
+
+        .loser-exit-right { animation: exitRightFast 0.5s ease-in forwards !important; }
+        @keyframes exitRightFast { to { transform: translateX(200px) scale(0.5); opacity: 0; filter: blur(10px); } }
+        .loser-exit-left { animation: exitLeftFast 0.5s ease-in forwards !important; }
+        @keyframes exitLeftFast { to { transform: translateX(-200px) scale(0.5); opacity: 0; filter: blur(10px); } }
+        .challenger-in { animation: challengerAppear 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+        @keyframes challengerAppear { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* 文字與進度條 */
         .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; text-shadow: 0 2px 10px #000; }
         .intro-text { font-size: 0.9rem; color: var(--neon-main); font-weight: bold; margin-top: 2px; }
-
-        /* 進度條跳動 */
-        .progress-bump { animation: bump 0.4s ease; }
-        @keyframes bump { 50% { transform: scale(1.05); } }
-
         .progress-wrap { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px; }
         .progress-container { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; position: relative; }
         .progress-bar { height: 100%; width: 0%; background: var(--neon-main); box-shadow: 0 0 15px var(--neon-main); transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
         .progress-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--neon-main); letter-spacing: 2px; }
-
         .flag-tag { position: absolute; top: 10px; left: 10px; font-size: 1.5rem; z-index: 5; }
         .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 75%); text-align: left; }
 
-        /* --- Footer --- */
+        /* Footer */
         .promo-footer { background: var(--glass); border-top: 2px solid var(--neon-main); padding: 25px 15px 15px; display: flex; flex-direction: column; align-items: center; z-index: 100; text-align: center; margin-top: auto; }
-        .promo-title { font-size: 1.4rem; color: var(--neon-light); font-weight: 900; margin-bottom: 8px; text-shadow: 0 0 10px var(--neon-main); }
-        .promo-desc { font-size: 1.1rem; color: #eee; margin-bottom: 15px; max-width: 700px; }
-        .promo-row-top { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; }
-        .promo-copy-wrap { display: flex; align-items: center; background: #000; padding: 4px 4px 4px 12px; border: 1px solid #444; border-radius: 4px; }
-        .promo-code { font-size: 1.4rem; font-weight: 900; color: #fff; font-family: 'Bebas Neue', sans-serif; margin-right: 10px; letter-spacing: 2px;}
-        .promo-btn { background: var(--neon-main); color: #000; border: none; padding: 6px 15px; font-weight: 900; cursor: pointer; font-size: 0.85rem; transition: 0.3s; }
         .promo-limit { font-size: 0.85rem; background: var(--gold); color: #000; padding: 4px 12px; font-weight: 900; border-radius: 4px; }
         .btn-register-footer { width: 100%; max-width: 450px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 12px; font-weight: 900; font-size: 1.2rem; letter-spacing: 5px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; transition: 0.3s; }
         .btn-register-footer:hover { background: var(--neon-main); color: #000; box-shadow: 0 0 25px var(--neon-main); }
@@ -192,10 +165,10 @@
     </main>
 
     <footer class="promo-footer">
-        <h3 class="promo-title">Jack 異國遊粉絲專屬優惠活動</h3>
-        <p class="promo-desc">解鎖全球誘惑，新用戶註冊輸入專屬代碼並完成手機綁定，領取 <b>2,000 鑽</b>。</p>
+        <h3 style="font-size: 1.4rem; color: var(--neon-light); margin-bottom: 8px;">Jack 異國遊粉絲專屬優惠活動</h3>
+        <p style="font-size: 1.1rem; color: #eee; margin-bottom: 15px;">解鎖全球誘惑，新用戶註冊輸入專屬代碼並完成手機綁定，領取 <b>2,000 鑽</b>。</p>
         <div class="promo-row-top">
-            <div class="promo-copy-wrap"><span class="promo-code" id="pCode">1212HAPPYTALK</span><button class="promo-btn" onclick="copyCode()">複製</button></div>
+            <div class="promo-copy-wrap"><span class="promo-code" id="pCode">1212HAPPYTALK</span><button style="background:var(--neon-main); border:none; padding:6px 15px; font-weight:900; cursor:pointer; border-radius:4px;" onclick="copyCode()">複製</button></div>
             <span class="promo-limit">限量 200 位，要換要快</span>
         </div>
         <button class="btn-register-footer" onclick="window.location.href='https://swa9.xyz/kIv3u'">馬上去註冊</button>
@@ -226,8 +199,6 @@
             const percent = ((currentStep - 1) / totalSteps) * 100;
             document.getElementById('pBar').style.width = percent + '%';
             document.getElementById('pText').innerText = `STEP ${currentStep} / ${totalSteps}`;
-            document.getElementById('progressWrap').classList.add('progress-bump');
-            setTimeout(() => document.getElementById('progressWrap').classList.remove('progress-bump'), 400);
             if (currentStep === totalSteps) document.getElementById('pText').innerText = "FINAL ROUND";
         }
 
@@ -236,16 +207,15 @@
                 const imgEl = document.getElementById(`img${i}`);
                 if (targetIdx === i || targetIdx === null) {
                     imgEl.style.opacity = '0'; 
-                    const tempImg = new Image();
-                    tempImg.src = b.img;
-                    tempImg.onload = () => {
-                        imgEl.src = b.img;
+                    imgEl.src = b.img;
+                    imgEl.onload = () => {
                         document.getElementById(`flag${i}`).innerText = b.flag;
                         document.getElementById(`name${i}`).innerText = b.name;
                         document.getElementById(`intro${i}`).innerText = b.intro;
                         imgEl.style.opacity = '0.9'; 
                     };
                 } else {
+                    // 贏家直接顯示，不重載
                     document.getElementById(`flag${i}`).innerText = b.flag;
                     document.getElementById(`name${i}`).innerText = b.name;
                     document.getElementById(`intro${i}`).innerText = b.intro;
@@ -258,36 +228,46 @@
             if (isAnimating) return;
             isAnimating = true;
 
-            const card0 = document.getElementById('card0'); // 左
-            const card1 = document.getElementById('card1'); // 右
+            const card0 = document.getElementById('card0');
+            const card1 = document.getElementById('card1');
+            const vsSign = document.getElementById('vsSign');
             const winner = currentChoice[idx];
             
             if (pool.length > 0) {
                 const challenger = pool.pop();
                 currentStep++;
 
-                // 核心視覺邏輯：
-                if (idx === 0) { // 左邊贏
+                if (idx === 0) {
                     card0.classList.add('winner-pulse');
                     card1.classList.add('loser-exit-right');
-                } else { // 右邊贏
-                    card1.classList.add('winner-pulse');
+                } else {
+                    card1.classList.add('winner-pulse', 'winner-to-throne');
                     card0.classList.add('loser-exit-left');
-                    card1.classList.add('winner-to-throne');
                 }
-                document.getElementById('vsSign').style.opacity = '0';
+                vsSign.style.opacity = '0';
 
+                // **核心修正：等動畫結束後的瞬間精確切換數據**
                 setTimeout(() => {
+                    // 1. 同步切換資料
+                    currentChoice = [winner, challenger];
+                    
+                    // 2. 徹底移除動畫類別（歸位）
                     card0.classList.remove('winner-pulse', 'loser-exit-left', 'loser-exit-right', 'winner-to-throne');
                     card1.classList.remove('winner-pulse', 'loser-exit-left', 'loser-exit-right', 'winner-to-throne');
                     
-                    currentChoice = [winner, challenger];
-                    renderRound(1); // 只刷新右邊挑戰者圖
+                    // 3. 渲染新內容 (此時卡片已回到 0,0 座標)
+                    renderRound(1);
                     
-                    card1.classList.add('challenger-in');
-                    document.getElementById('vsSign').style.opacity = '1';
-                    setTimeout(() => { card1.classList.remove('challenger-in'); isAnimating = false; }, 500);
-                }, 500);
+                    // 4. 新人入場動畫
+                    setTimeout(() => {
+                        card1.classList.add('challenger-in');
+                        vsSign.style.opacity = '1';
+                        setTimeout(() => {
+                            card1.classList.remove('challenger-in');
+                            isAnimating = false;
+                        }, 500);
+                    }, 50);
+                }, 400); // 略短於動畫時間以獲得極速感
             } else {
                 showFinalist(winner);
             }
@@ -306,7 +286,7 @@
                         <img src="${winner.img}" style="opacity:1">
                         <div class="info-panel"><div class="name-meta" style="font-size:2rem">${winner.name}</div><div class="intro-text">今晚就決定是你了。</div></div>
                     </div>
-                    <button class="btn-register-footer" style="margin-top:25px; background:var(--neon-main); color:#000; box-shadow:0 0 30px var(--neon-glow);" onclick="window.location.href='${winner.link}'">觀看私密內容</button>
+                    <button class="btn-register-footer" style="margin-top:25px; background:var(--gold); color:#000; box-shadow:0 0 30px var(--neon-glow);" onclick="window.location.href='${winner.link}'">觀看私密內容</button>
                 </div>
             `;
         }
