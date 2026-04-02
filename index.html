@@ -43,38 +43,34 @@
 
         /* --- 主舞台 --- */
         .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 10px 10px 30px; }
+        
+        /* 修改後的標題：更厚實清晰 */
         .instruction-main { 
-            font-family: 'Noto Sans TC', sans-serif; font-size: 2.4rem; font-weight: 900; 
-            color: #fff; text-shadow: 2px 2px 4px #000, 0 0 10px var(--neon-main);
+            font-family: 'Noto Sans TC', sans-serif; font-size: 2.5rem; font-weight: 900; 
+            color: #fff; 
+            text-shadow: 3px 3px 0px #000, 0 0 15px var(--neon-glow); /* 強力黑色投影襯托，減少刺眼光暈 */
             margin-bottom: 5px; text-align: center; 
         }
-        .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 8px; text-align: center; }
         
-        /* **新增：呼吸動態特效** */
+        .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 10px; text-align: center; }
+
+        /* **強化版呼吸特效：誰是你的嚮導** */
         .pk-sub-header { 
-            font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.3rem; 
+            font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.4rem; 
             letter-spacing: 4px; color: var(--neon-main); margin-bottom: 30px; text-align: center;
-            animation: text-breathe 3s infinite ease-in-out;
+            animation: intense-breathe 2.5s infinite ease-in-out;
             will-change: transform, text-shadow, opacity;
         }
-        @keyframes text-breathe {
-            0%, 100% { 
-                transform: scale(1); 
-                text-shadow: 0 0 8px var(--neon-glow); 
-                opacity: 0.8;
-            }
-            50% { 
-                transform: scale(1.05); 
-                text-shadow: 0 0 20px var(--neon-main), 0 0 30px var(--neon-main); 
-                opacity: 1;
-            }
+        @keyframes intense-breathe {
+            0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--neon-glow); opacity: 0.7; color: var(--neon-main); }
+            50% { transform: scale(1.1); text-shadow: 0 0 25px var(--neon-main), 0 0 40px #fff; opacity: 1; color: #fff; }
         }
 
         /* PK 模組 */
         .versus-module { 
             display: flex; align-items: center; justify-content: center; 
             gap: 20px; width: 100%; max-width: 1000px; position: relative; 
-            padding: 0 10px; margin-bottom: 30px;
+            padding: 0 10px; margin-bottom: 25px;
         }
         
         .babe-card { 
@@ -91,67 +87,37 @@
         .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; text-shadow: 0 2px 10px #000; }
         .intro-text { font-size: 0.9rem; color: var(--neon-main); font-weight: bold; margin-top: 2px; }
 
-        /* --- 進度反饋系統 --- */
+        /* 進度條 (位移到卡片下方) */
         .progress-wrap { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px; }
-        .progress-container {
-            width: 100%; height: 6px; background: rgba(255,255,255,0.1);
-            border-radius: 10px; overflow: hidden; position: relative;
-        }
-        .progress-bar {
-            height: 100%; width: 0%; background: var(--neon-main);
-            box-shadow: 0 0 15px var(--neon-main); transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        .progress-text {
-            font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--neon-main);
-            letter-spacing: 2px; opacity: 0.8;
-        }
+        .progress-container { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-bar { height: 100%; width: 0%; background: var(--neon-main); box-shadow: 0 0 15px var(--neon-main); transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
+        .progress-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--neon-main); letter-spacing: 2px; }
 
-        /* --- RWD 手機版 --- */
+        /* 手機版並排 */
         @media (max-width: 800px) {
             .versus-module { gap: 10px; padding: 0 5px; }
             .babe-card { flex: 0 0 calc(50vw - 12px); width: calc(50vw - 12px); height: calc(50vw - 12px); }
-            .vs-sign { 
-                font-size: 2.2rem; position: absolute; top: 50%; left: 50%; 
-                transform: translate(-50%, -50%); pointer-events: none;
-                background: rgba(0,0,0,0.5); width: 45px; height: 45px;
-                display: flex; align-items: center; justify-content: center; border-radius: 50%;
-            }
-            .instruction-main { font-size: 1.5rem; }
+            .vs-sign { font-size: 2.2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; background: rgba(0,0,0,0.5); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+            .instruction-main { font-size: 1.6rem; }
             .winner-move-to-left { animation: slideWinnerLeftMob 0.6s forwards !important; }
             @keyframes slideWinnerLeftMob { to { transform: translateX(calc(-50vw + 2px)); } }
-            .name-meta { font-size: 1.1rem; }
-            .intro-text { font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .progress-wrap { width: 90%; }
+            .name-meta { font-size: 1.2rem; }
+            .intro-text { font-size: 0.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         }
-
-        @media (min-width: 801px) {
-            .winner-move-to-left { animation: slideWinnerLeftPC 0.6s forwards !important; }
-            @keyframes slideWinnerLeftPC { to { transform: translateX(-370px); } }
-        }
-
-        .loser-exit-left { animation: exitLeft 0.6s forwards !important; }
-        @keyframes exitLeft { to { transform: translateX(-150%) scale(0.8); opacity: 0; filter: blur(8px); } }
-        .loser-exit-right { animation: exitRight 0.6s forwards !important; }
-        @keyframes exitRight { to { transform: translateX(150%) scale(0.8); opacity: 0; filter: blur(8px); } }
-        .new-challenger-in { animation: challengerIn 0.6s forwards; }
-        @keyframes challengerIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-
-        .flag-tag { position: absolute; top: 10px; left: 10px; font-size: 1.5rem; z-index: 5; }
-        .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 75%); text-align: left; }
 
         /* --- FOOTER --- */
         .promo-footer { background: var(--glass); border-top: 2px solid var(--neon-main); padding: 25px 15px 15px; display: flex; flex-direction: column; align-items: center; z-index: 100; text-align: center; margin-top: auto; }
         .promo-title { font-size: 1.4rem; color: var(--neon-light); font-weight: 900; margin-bottom: 8px; text-shadow: 0 0 10px var(--neon-main); }
         .promo-desc { font-size: 1.1rem; color: #eee; margin-bottom: 15px; max-width: 700px; }
         .promo-desc b { color: var(--neon-main); }
-
         .promo-row-top { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; }
         .promo-copy-wrap { display: flex; align-items: center; background: #000; padding: 4px 4px 4px 12px; border: 1px solid #444; border-radius: 4px; }
         .promo-code { font-size: 1.4rem; font-weight: 900; color: #fff; font-family: 'Bebas Neue', sans-serif; margin-right: 10px; letter-spacing: 2px;}
         .promo-btn { background: var(--neon-main); color: #000; border: none; padding: 6px 15px; font-weight: 900; cursor: pointer; font-size: 0.85rem; transition: 0.3s; }
         .promo-btn:hover { background: #fff; }
         .promo-limit { font-size: 0.75rem; background: var(--gold); color: #000; padding: 3px 8px; font-weight: 900; border-radius: 2px; }
-
+        
+        /* 註冊按鈕 */
         .btn-register-footer { width: 100%; max-width: 450px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 12px; font-weight: 900; font-size: 1.2rem; letter-spacing: 5px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; transition: 0.3s; }
         .btn-register-footer:hover { background: var(--neon-main); color: #000; box-shadow: 0 0 25px var(--neon-main); }
 
@@ -238,13 +204,11 @@
 
         function updateProgress() {
             const percent = ((currentStep - 1) / totalSteps) * 100;
-            const pBar = document.getElementById('pBar');
-            const pText = document.getElementById('pText');
-            pBar.style.width = percent + '%';
-            pText.innerText = `STEP ${currentStep} / ${totalSteps}`;
+            document.getElementById('pBar').style.width = percent + '%';
+            document.getElementById('pText').innerText = `STEP ${currentStep} / ${totalSteps}`;
             if (currentStep === totalSteps) {
-                pText.innerText = "FINAL ROUND";
-                pBar.style.background = "#FFD700";
+                document.getElementById('pText').innerText = "FINAL ROUND";
+                document.getElementById('pBar').style.background = "#FFD700";
             }
         }
 
@@ -320,7 +284,7 @@
                         <div style="position:absolute;top:10px;right:10px;background:var(--gold);color:#000;padding:4px 12px;border-radius:20px;font-weight:900;font-size:0.75rem;z-index:6">👑 Winner</div>
                         <img src="${winner.img}" style="opacity:1">
                         <div class="info-panel">
-                            <div class="name-meta">${winner.name}</div>
+                            <div class="name-meta" style="font-size:2rem">${winner.name}</div>
                             <div class="intro-text">今晚就決定是你了。</div>
                         </div>
                     </div>
