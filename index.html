@@ -33,7 +33,7 @@
             opacity: 0.65; animation: bg-cinematic-slide 40s ease-in-out infinite;
             will-change: transform; transform: translateZ(0);
         }
-        @keyframes bg-cinematic-slide { 0% { transform: translate(0%, 0%); } 50% { transform: translate(5%, -5%); } 100% { transform: translate(0%, 0%); } }
+        @keyframes bg-cinematic-slide { 0% { transform: translate(0%, 0%); } 50% { transform: translate(10%, -10%); } 100% { transform: translate(0%, 0%); } }
 
         /* --- Header --- */
         .top-header { padding: 30px 10px 10px; text-align: center; z-index: 10; }
@@ -43,7 +43,15 @@
 
         /* --- 主舞台 --- */
         .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 10px 10px 30px; }
-        .instruction-main { font-family: 'Noto Sans TC', sans-serif; font-size: 2.4rem; font-weight: 900; text-shadow: 0 0 5px #fff, 0 0 20px var(--neon-main); margin-bottom: 5px; text-align: center; }
+        
+        /* 修改 4：調整標題螢光，提升清晰度 */
+        .instruction-main { 
+            font-family: 'Noto Sans TC', sans-serif; font-size: 2.4rem; font-weight: 900; 
+            color: #fff;
+            text-shadow: 2px 2px 4px #000, 0 0 10px var(--neon-main); /* 減少擴散，增加黑影 */
+            margin-bottom: 5px; text-align: center; 
+        }
+        
         .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 8px; text-align: center; }
         .pk-sub-header { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.3rem; letter-spacing: 4px; color: var(--neon-main); margin-bottom: 30px; text-align: center; }
 
@@ -56,35 +64,34 @@
             transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s ease;
             animation: card-wait-pulse 3s infinite ease-in-out; 
             will-change: transform; transform: translateZ(0);
-            backface-visibility: hidden;
         }
         @keyframes card-wait-pulse { 0%, 100% { transform: scale(1); border-color: #222; } 50% { transform: scale(1.02); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
         
-        /* 圖片基礎狀態 */
-        .babe-card img { 
-            width: 100%; height: 100%; object-fit: cover; 
-            opacity: 0.9; transition: opacity 0.3s ease; /* 換圖時的平滑淡入淡出 */
-        }
+        .babe-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: opacity 0.3s ease; }
 
         .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; }
 
-        /* --- 2. 文字尺寸調整回來 --- */
+        /* 文字尺寸恢復 */
         .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; text-shadow: 0 2px 10px #000; }
         .intro-text { font-size: 0.9rem; color: var(--neon-main); font-weight: bold; margin-top: 2px; }
 
-        /* --- 手機版 RWD --- */
+        /* 手機版 RWD */
         @media (max-width: 800px) {
             .versus-module { gap: 10px; padding: 0 5px; }
             .babe-card { flex: 0 0 calc(50vw - 12px); width: calc(50vw - 12px); height: calc(50vw - 12px); }
             .vs-sign { font-size: 2.2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; background: rgba(0,0,0,0.5); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
             .instruction-main { font-size: 1.5rem; }
-            .name-meta { font-size: 1.4rem; } /* 手機版稍縮但依然清晰 */
+            .winner-move-to-left { animation: slideWinnerLeftMob 0.6s forwards !important; }
+            @keyframes slideWinnerLeftMob { to { transform: translateX(calc(-50vw + 2px)); } }
+            .name-meta { font-size: 1.4rem; }
             .intro-text { font-size: 0.8rem; }
         }
 
-        /* 動態類別 */
-        .winner-move-to-left { animation: slideWinnerLeft 0.6s forwards !important; }
-        @keyframes slideWinnerLeft { to { transform: translateX(calc(-100% - 20px)); } }
+        @media (min-width: 801px) {
+            .winner-move-to-left { animation: slideWinnerLeftPC 0.6s forwards !important; }
+            @keyframes slideWinnerLeftPC { to { transform: translateX(-370px); } }
+        }
+
         .loser-exit-left { animation: exitLeft 0.6s forwards !important; }
         @keyframes exitLeft { to { transform: translateX(-150%) scale(0.8); opacity: 0; filter: blur(8px); } }
         .loser-exit-right { animation: exitRight 0.6s forwards !important; }
@@ -92,7 +99,6 @@
         .new-challenger-in { animation: challengerIn 0.6s forwards; }
         @keyframes challengerIn { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-        /* 資訊面板 */
         .flag-tag { position: absolute; top: 10px; left: 10px; font-size: 1.5rem; z-index: 5; }
         .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 75%); text-align: left; }
 
@@ -100,27 +106,22 @@
         .promo-footer { background: var(--glass); border-top: 2px solid var(--neon-main); padding: 25px 15px 15px; display: flex; flex-direction: column; align-items: center; z-index: 100; text-align: center; margin-top: auto; }
         .promo-title { font-size: 1.4rem; color: var(--neon-light); font-weight: 900; margin-bottom: 8px; text-shadow: 0 0 10px var(--neon-main); }
         .promo-desc { font-size: 1.1rem; color: #eee; margin-bottom: 15px; max-width: 700px; }
+        .promo-desc b { color: var(--neon-main); }
+
         .promo-row-top { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; justify-content: center; }
         .promo-copy-wrap { display: flex; align-items: center; background: #000; padding: 4px 4px 4px 12px; border: 1px solid #444; border-radius: 4px; }
         .promo-code { font-size: 1.4rem; font-weight: 900; color: #fff; font-family: 'Bebas Neue', sans-serif; margin-right: 10px; letter-spacing: 2px;}
         .promo-btn { background: var(--neon-main); color: #000; border: none; padding: 6px 15px; font-weight: 900; cursor: pointer; font-size: 0.85rem; }
         .promo-limit { font-size: 0.75rem; background: var(--gold); color: #000; padding: 3px 8px; font-weight: 900; border-radius: 2px; }
+
         .btn-register-footer { width: 100%; max-width: 450px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 12px; font-weight: 900; font-size: 1.2rem; letter-spacing: 5px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; transition: 0.3s; }
         .btn-register-footer:hover { background: var(--neon-main); color: #000; box-shadow: 0 0 25px var(--neon-main); }
+
         .platform-declare-wrap { display: flex; align-items: center; justify-content: center; gap: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; font-size: 1rem; font-weight: 900; white-space: nowrap;}
         .footer-logo-small { height: 16px; filter: drop-shadow(0 0 5px #fff); }
 
-        /* 勝利者呈現優化 */
         .winner-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: popIn 0.6s ease-out; width: 100%; }
-        .winner-final-card {
-            aspect-ratio: 1 / 1 !important;
-            width: min(85vw, 400px) !important;
-            height: auto !important;
-            border-color: var(--neon-main) !important;
-            box-shadow: 0 0 50px var(--neon-glow);
-        }
-        .winner-final-card .name-meta { font-size: 2.2rem !important; }
-        .winner-final-card .intro-text { font-size: 1.1rem !important; }
+        .winner-final-card { aspect-ratio: 1 / 1 !important; width: min(85vw, 400px) !important; height: auto !important; border-color: var(--neon-main) !important; box-shadow: 0 0 50px var(--neon-glow); }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
@@ -157,15 +158,18 @@
 
     <footer class="promo-footer">
         <h3 class="promo-title">Jack 異國遊粉絲專屬優惠活動</h3>
-        <p class="promo-desc">解鎖全球誘惑，新用戶註冊輸入專屬代碼並完成手機綁定，領取 <b>2000 鑽石</b>。</p>
+        <p class="promo-desc">解鎖全球誘惑，新用戶註冊輸入專屬代碼並完成手機綁定，領取 <b>2,000 鑽</b>。</p>
+
         <div class="promo-row-top">
             <div class="promo-copy-wrap">
-                <span class="promo-code" id="pCode">JACK666</span>
+                <span class="promo-code" id="pCode">1212HAPPYTALK</span>
                 <button class="promo-btn" onclick="copyCode()">複製</button>
             </div>
             <span class="promo-limit">限量 200 位，要換要快</span>
         </div>
+
         <button class="btn-register-footer" onclick="openLiveroom()">馬上去註冊</button>
+
         <div class="platform-declare-wrap">
             <img src="https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/SWAG-Logo-White-1200.png" class="footer-logo-small">
             <span>亞洲最大成人直播平台</span> | <span style="color:var(--gold)">未滿 18 歲請勿進入</span>
@@ -173,18 +177,15 @@
     </footer>
 
     <script>
+        // 修改 1：更新名單與連結
         const babes = [
-            { name: "小映", flag: "🇹🇼", intro: "性感健身模特", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E6%98%A0.jpg" },
-            { name: "向日葵", flag: "🇹🇼", intro: "陽光女孩", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%90%91%E6%97%A5%E8%91%B5.jpg" },
-            { name: "娃娃", flag: "🇹🇼", intro: "清純大尺反差", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%A8%83%E5%A8%83.jpg" },
-            { name: "小甜馨", flag: "🇹🇼", intro: "真誠最溫柔", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E7%94%9C%E9%A6%A8.jpg" },
-            { name: "柚柚", flag: "🇨🇳", intro: "大眼氣質美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%9F%9A%E6%9F%9A.jpg" },
-            { name: "凱希", flag: "🇹🇼", intro: "氣質甜心", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%87%B1%E5%B8%8C.jpg" },
-            { name: "Venus", flag: "🇭🇰", intro: "正點香港美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Venus%20%E7%B6%AD%E7%B4%8D%E6%96%AF.jpg" },
-            { name: "MacyChan", flag: "🇭🇰", intro: "喜歡多人運動", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/MacyChanHK.jpg" },
-            { name: "Sweet Katty", flag: "🇪🇺", intro: "超正東歐主播", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/sweetkatty.jpg" },
-            { name: "Aryana", flag: "🇺🇸", intro: "明星顏值", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/Aryana.jpg" },
-            { name: "水蜜桃", flag: "🇨🇳", intro: "白皙大長腿", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%B0%B4%E8%9C%9C%E6%A1%83.jpg" }
+            { name: "娃娃", flag: "🇹🇼", intro: "清純大尺反差", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%A8%83%E5%A8%83.jpg", link: "https://swa9.xyz/t0oUb" },
+            { name: "小甜馨", flag: "🇹🇼", intro: "真誠最溫柔", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E5%B0%8F%E7%94%9C%E9%A6%A8.jpg", link: "https://swag.run/vKqbW" },
+            { name: "MacyChanHK", flag: "🇭🇰", intro: "喜歡多人運動", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/MacyChanHK.jpg", link: "https://swa9.xyz/10D6K" },
+            { name: "柚柚", flag: "🇨🇳", intro: "大眼氣質美女", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E6%9F%9A%E6%9F%9A.jpg", link: "https://swag.run/V6d1W" },
+            { name: "玲兒", flag: "🇻🇳", intro: "越南人氣網美", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/%E7%8E%B2%E5%85%92.jpg", link: "https://swa9.xyz/ceanu" },
+            { name: "Senzuality", flag: "🇪🇺", intro: "反差感超大", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/senzuality.jpg", link: "https://swa9.xyz/y9gNO" },
+            { name: "GirlIsOnFire", flag: "🇪🇺", intro: "白皙貌美", img: "https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/girlisonnfire.jpg", link: "https://swa9.xyz/T7b3X" }
         ];
 
         let pool = [...babes].sort(() => Math.random() - 0.5); 
@@ -198,24 +199,21 @@
                 const nameEl = document.getElementById(`name${i}`);
                 const introEl = document.getElementById(`intro${i}`);
 
-                // 如果是需要換圖的那張卡片
                 if (targetIdx === i || targetIdx === null) {
-                    imgEl.style.opacity = '0'; // 1. 先變透明，防止殘影
-                    
+                    imgEl.style.opacity = '0'; 
                     const tempImg = new Image();
                     tempImg.src = b.img;
                     tempImg.onload = () => {
                         imgEl.src = b.img;
                         flagEl.innerText = b.flag;
-                        nameEl.innerText = b.name;
+                        nameEl.innerText = b.name || "Babe";
                         introEl.innerText = b.intro;
-                        imgEl.style.opacity = '0.9'; // 2. 圖片加載完畢後再顯示
+                        imgEl.style.opacity = '0.9'; 
                     };
                 } else {
-                    // 不需要換圖的那張（贏家），直接更新位置即可
                     imgEl.src = b.img;
                     flagEl.innerText = b.flag;
-                    nameEl.innerText = b.name;
+                    nameEl.innerText = b.name || "Babe";
                     introEl.innerText = b.intro;
                 }
             });
@@ -233,32 +231,18 @@
             if (pool.length > 0) {
                 const challenger = pool.pop();
 
-                // 動畫：左邊贏或右邊贏
-                if (idx === 0) {
-                    card1.classList.add('loser-exit-right');
-                } else {
-                    card0.classList.add('loser-exit-left');
-                    card1.classList.add('winner-move-to-left');
-                }
+                if (idx === 0) { card1.classList.add('loser-exit-right'); } 
+                else { card0.classList.add('loser-exit-left'); card1.classList.add('winner-move-to-left'); }
                 vsSign.style.opacity = '0';
 
                 setTimeout(() => {
-                    // 移除動畫類別，重置位置
                     card0.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
                     card1.classList.remove('loser-exit-left', 'loser-exit-right', 'winner-move-to-left');
-                    
                     currentChoice = [winner, challenger];
-                    
-                    // 呼叫渲染，並指定只有 index 1 (挑戰者位) 需要執行淡入換圖
                     renderRound(1);
-                    
                     card1.classList.add('new-challenger-in');
                     vsSign.style.opacity = '1';
-
-                    setTimeout(() => {
-                        card1.classList.remove('new-challenger-in');
-                        isAnimating = false;
-                    }, 600);
+                    setTimeout(() => { card1.classList.remove('new-challenger-in'); isAnimating = false; }, 600);
                 }, 600);
             } else {
                 showFinalist(winner);
@@ -269,6 +253,7 @@
             document.querySelector('.instruction-main').style.display = 'none';
             document.querySelector('.global-hook').style.display = 'none';
             document.getElementById('pkHeader').style.display = 'none'; 
+            
             document.getElementById('pkStage').innerHTML = `
                 <div class="winner-stage">
                     <div class="babe-card winner-final-card">
@@ -280,15 +265,14 @@
                             <div class="intro-text">今晚就決定是你了。</div>
                         </div>
                     </div>
-                    <button class="btn-register-footer" style="margin-top:25px; background:var(--neon-main); color:#000; box-shadow:0 0 30px var(--neon-glow);" onclick="openLiveroom()">進入私密直播間</button>
+                    <button class="btn-register-footer" style="margin-top:25px; background:var(--neon-main); color:#000; box-shadow:0 0 30px var(--neon-glow);" onclick="window.location.href='${winner.link}'">觀看私密內容</button>
                 </div>
             `;
         }
 
         function openLiveroom() { window.location.href = "https://swag.live/"; }
-        function copyCode() { navigator.clipboard.writeText("JACK666"); alert("代碼已複製！"); }
+        function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("代碼已複製！"); }
         
-        // 初始載入
         renderRound();
     </script>
 </body>
