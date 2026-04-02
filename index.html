@@ -43,42 +43,18 @@
 
         /* --- 主舞台 --- */
         .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 10px 10px 20px; }
-        .instruction-main { 
-            font-family: 'Noto Sans TC', sans-serif; font-size: 2.5rem; font-weight: 900; 
-            color: #fff; text-shadow: 3px 3px 0px #000, 0 0 15px var(--neon-glow);
-            margin-bottom: 5px; text-align: center; 
-        }
+        .instruction-main { font-family: 'Noto Sans TC', sans-serif; font-size: 2.5rem; font-weight: 900; color: #fff; text-shadow: 3px 3px 0px #000, 0 0 15px var(--neon-glow); margin-bottom: 5px; text-align: center; }
         .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 10px; text-align: center; }
-        .pk-sub-header { 
-            font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.4rem; 
-            letter-spacing: 4px; color: var(--neon-main); margin-bottom: 30px; text-align: center;
-            animation: intense-breathe 2.5s infinite ease-in-out;
-        }
-        @keyframes intense-breathe {
-            0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--neon-glow); opacity: 0.7; }
-            50% { transform: scale(1.1); text-shadow: 0 0 25px var(--neon-main), 0 0 40px #fff; opacity: 1; color: #fff; }
-        }
+        .pk-sub-header { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.4rem; letter-spacing: 4px; color: var(--neon-main); margin-bottom: 30px; text-align: center; animation: intense-breathe 2.5s infinite ease-in-out; }
+        @keyframes intense-breathe { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--neon-glow); opacity: 0.7; } 50% { transform: scale(1.1); text-shadow: 0 0 25px var(--neon-main), 0 0 40px #fff; opacity: 1; color: #fff; } }
 
         /* PK 模組 */
         .versus-module { display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%; max-width: 1000px; position: relative; padding: 0 10px; margin-bottom: 25px; }
-        
-        .babe-card { 
-            position: relative; cursor: pointer; overflow: hidden; background: #000; border: 2px solid #222;
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s ease, box-shadow 0.4s ease;
-            animation: card-wait-pulse 3s infinite ease-in-out; 
-            will-change: transform, opacity; transform: translateZ(0);
-        }
+        .babe-card { position: relative; cursor: pointer; overflow: hidden; background: #000; border: 2px solid #222; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s ease; animation: card-wait-pulse 3s infinite ease-in-out; will-change: transform; }
         @keyframes card-wait-pulse { 0%, 100% { transform: scale(1); border-color: #222; } 50% { transform: scale(1.02); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
-        
-        .babe-card img { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            object-fit: cover; object-position: center top; display: block;
-            opacity: 0.9; transition: opacity 0.3s ease; 
-        }
+        .babe-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; opacity: 0.9; transition: opacity 0.3s ease; }
+        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; }
 
-        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; transition: opacity 0.3s; }
-
-        /* 動態類別 */
         @media (min-width: 801px) {
             .babe-card { flex: 0 0 350px; width: 350px; height: 350px; }
             .winner-to-throne { animation: slideToThronePC 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
@@ -90,11 +66,11 @@
             .vs-sign { font-size: 2.2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; background: rgba(0,0,0,0.5); width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
             .winner-to-throne { animation: slideToThroneMob 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
             @keyframes slideToThroneMob { to { transform: translateX(calc(-50vw + 2px)); } }
+            .instruction-main { font-size: 1.6rem; }
         }
 
         .winner-pulse { animation: winnerCelebrate 0.5s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards !important; z-index: 12; }
         @keyframes winnerCelebrate { 0% { transform: scale(1); border-color: var(--gold); } 50% { transform: scale(1.1); border-color: #fff; box-shadow: 0 0 80px var(--gold); } 100% { transform: scale(1); border-color: var(--gold); } }
-
         .loser-exit-right { animation: exitRightFast 0.5s ease-in forwards !important; }
         @keyframes exitRightFast { to { transform: translateX(200px) scale(0.5); opacity: 0; filter: blur(10px); } }
         .loser-exit-left { animation: exitLeftFast 0.5s ease-in forwards !important; }
@@ -111,11 +87,59 @@
         .flag-tag { position: absolute; top: 10px; left: 10px; font-size: 1.5rem; z-index: 5; }
         .info-panel { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(transparent, rgba(0,0,0,0.95) 75%); text-align: left; }
         
-        .promo-footer { background: var(--glass); border-top: 2px solid var(--neon-main); padding: 25px 15px 15px; display: flex; flex-direction: column; align-items: center; z-index: 100; text-align: center; margin-top: auto; }
-        .promo-limit { font-size: 0.85rem; background: var(--gold); color: #000; padding: 4px 12px; font-weight: 900; border-radius: 4px; }
-        .btn-register-footer { width: 100%; max-width: 450px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 12px; font-weight: 900; font-size: 1.2rem; letter-spacing: 5px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; transition: 0.3s; }
-        .platform-declare-wrap { display: flex; align-items: center; justify-content: center; gap: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; font-size: 1rem; font-weight: 900; white-space: nowrap;}
-        .footer-logo-small { height: 16px; }
+        /* --- FOOTER 重建樣式 --- */
+        .promo-footer { 
+            background: var(--glass); border-top: 2px solid var(--neon-main); 
+            padding: 25px 15px 20px; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; z-index: 100; 
+            text-align: center; margin-top: auto; width: 100%;
+        }
+        .promo-title { font-size: 1.4rem; color: var(--neon-light); font-weight: 900; margin-bottom: 8px; text-shadow: 0 0 10px var(--neon-main); }
+        .promo-desc { font-size: 1.1rem; color: #eee; margin-bottom: 20px; max-width: 800px; line-height: 1.4; }
+        .promo-desc b { color: var(--neon-main); }
+
+        .promo-row-wrap { 
+            display: flex; align-items: center; justify-content: center; 
+            gap: 15px; margin-bottom: 20px; flex-wrap: wrap; 
+        }
+        .promo-copy-box { 
+            display: flex; align-items: center; background: #000; 
+            border: 1px solid #444; border-radius: 6px; overflow: hidden; 
+        }
+        .promo-code-val { font-size: 1.3rem; font-weight: 900; color: #fff; padding: 5px 15px; letter-spacing: 1px; font-family: 'Bebas Neue', sans-serif;}
+        .promo-copy-btn { 
+            background: var(--neon-main); color: #000; border: none; 
+            padding: 8px 18px; font-weight: 900; cursor: pointer; 
+            font-size: 0.9rem; transition: 0.2s;
+        }
+        .promo-copy-btn:hover { background: #fff; }
+        .promo-limit-tag { 
+            background: var(--gold); color: #000; padding: 6px 12px; 
+            font-weight: 900; border-radius: 4px; font-size: 0.85rem; 
+        }
+
+        .btn-register-footer { 
+            width: 100%; max-width: 450px; background: transparent; 
+            border: 2px solid var(--neon-main); color: var(--neon-main); 
+            padding: 14px; font-weight: 900; font-size: 1.2rem; 
+            letter-spacing: 5px; cursor: pointer; border-radius: 6px; 
+            box-shadow: 0 0 15px var(--neon-glow); margin-bottom: 20px; transition: 0.3s;
+        }
+        .btn-register-footer:hover { background: var(--neon-main); color: #000; box-shadow: 0 0 30px var(--neon-main); }
+
+        .platform-legal { 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            font-size: 0.95rem; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); 
+            padding-top: 15px; width: 100%; max-width: 600px;
+        }
+        .footer-logo { height: 18px; }
+
+        @media (max-width: 600px) {
+            .promo-title { font-size: 1.2rem; }
+            .promo-desc { font-size: 0.95rem; }
+            .promo-code-val { font-size: 1.1rem; padding: 5px 10px; }
+            .platform-legal { font-size: 0.8rem; flex-wrap: wrap; }
+        }
 
         .winner-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: popIn 0.6s ease-out; width: 100%; }
         .winner-final-card { aspect-ratio: 1 / 1 !important; width: min(85vw, 400px) !important; height: auto !important; border-color: var(--gold) !important; box-shadow: 0 0 50px var(--gold); }
@@ -159,15 +183,21 @@
     </main>
 
     <footer class="promo-footer">
-        <h3 style="font-size: 1.4rem; color: var(--neon-light); margin-bottom: 8px;">Jack 異國遊粉絲專屬優惠活動</h3>
-        <p style="font-size: 1.1rem; color: #eee; margin-bottom: 15px;">解鎖全球誘惑，新用戶註冊輸入專屬代碼並完成手機綁定，領取 <b>2,000 鑽</b>。</p>
-        <div class="promo-row-top">
-            <div class="promo-copy-wrap"><span class="promo-code" id="pCode">1212HAPPYTALK</span><button style="background:var(--neon-main); border:none; padding:6px 15px; font-weight:900; cursor:pointer; border-radius:4px;" onclick="copyCode()">複製</button></div>
-            <span class="promo-limit">限量 200 位，要換要快</span>
+        <h3 class="promo-title">Jack 異國遊粉絲專屬優惠活動</h3>
+        <p class="promo-desc">解鎖全球誘惑，新用戶註冊輸入專屬代碼並完成手機綁定，領取 <b>2,000 鑽</b>。</p>
+
+        <div class="promo-row-wrap">
+            <div class="promo-copy-box">
+                <span class="promo-code-val">1212HAPPYTALK</span>
+                <button class="promo-copy-btn" onclick="copyCode()">複製</button>
+            </div>
+            <span class="promo-limit-tag">限量 200 位，要換要快</span>
         </div>
+
         <button class="btn-register-footer" onclick="window.location.href='https://swa9.xyz/kIv3u'">馬上去註冊</button>
-        <div class="platform-declare-wrap">
-            <img src="https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/SWAG-Logo-White-1200.png" class="footer-logo-small">
+
+        <div class="platform-legal">
+            <img src="https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/SWAG-Logo-White-1200.png" class="footer-logo">
             <span>亞洲最大成人直播平台</span> | <span style="color:var(--gold)">未滿 18 歲請勿進入</span>
         </div>
     </footer>
@@ -195,27 +225,18 @@
             document.getElementById('pText').innerText = currentStep === totalSteps ? "FINAL ROUND" : `STEP ${currentStep} / ${totalSteps}`;
         }
 
-        // 核心修正：渲染邏輯分開處理圖片與文字，確保 100% 同步
-        function renderRound(onlyChallenger = false) {
+        function renderRound() {
             currentChoice.forEach((b, i) => {
-                // 如果只更新挑戰者 (i=1)，則跳過贏家 (i=0) 的重載
-                if (onlyChallenger && i === 0) return;
-
                 const imgEl = document.getElementById(`img${i}`);
-                const flagEl = document.getElementById(`flag${i}`);
-                const nameEl = document.getElementById(`name${i}`);
-                const introEl = document.getElementById(`intro${i}`);
-
-                imgEl.style.opacity = '0'; // 換圖前先消失，防止殘影
-
+                imgEl.style.opacity = '0'; 
                 const tempImg = new Image();
                 tempImg.src = b.img;
                 tempImg.onload = () => {
                     imgEl.src = b.img;
-                    flagEl.innerText = b.flag;
-                    nameEl.innerText = b.name;
-                    introEl.innerText = b.intro;
-                    imgEl.style.opacity = '0.9'; // 下載完畢後再出現
+                    document.getElementById(`flag${i}`).innerText = b.flag;
+                    document.getElementById(`name${i}`).innerText = b.name;
+                    document.getElementById(`intro${i}`).innerText = b.intro;
+                    imgEl.style.opacity = '0.9'; 
                 };
             });
             updateProgress();
@@ -227,46 +248,27 @@
 
             const card0 = document.getElementById('card0');
             const card1 = document.getElementById('card1');
-            const vsSign = document.getElementById('vsSign');
-            const winner = currentChoice[idx]; // 捕捉當前被點選的人
+            const winner = currentChoice[idx];
             
             if (pool.length > 0) {
                 const challenger = pool.pop();
                 currentStep++;
 
-                // 動畫啟動
-                if (idx === 0) {
-                    card0.classList.add('winner-pulse');
-                    card1.classList.add('loser-exit-right');
-                } else {
-                    card1.classList.add('winner-pulse', 'winner-to-throne');
-                    card0.classList.add('loser-exit-left');
-                }
-                vsSign.style.opacity = '0';
+                if (idx === 0) { card0.classList.add('winner-pulse'); card1.classList.add('loser-exit-right'); } 
+                else { card1.classList.add('winner-pulse', 'winner-to-throne'); card0.classList.add('loser-exit-left'); }
+                document.getElementById('vsSign').style.opacity = '0';
 
-                // **核心修正：在動畫結束後，重新精確排列資料並渲染**
                 setTimeout(() => {
-                    // 1. 先重置所有卡片位置，關閉動畫類別
                     card0.classList.remove('winner-pulse', 'loser-exit-left', 'loser-exit-right', 'winner-to-throne');
                     card1.classList.remove('winner-pulse', 'loser-exit-left', 'loser-exit-right', 'winner-to-throne');
-
-                    // 2. 關鍵：重新設定資料陣列，贏家永遠去左邊(0)，新人去右邊(1)
                     currentChoice = [winner, challenger];
-
-                    // 3. 執行同步渲染 (強制刷新左與右)
                     renderRound();
-
-                    // 4. 執行新進場動畫
                     setTimeout(() => {
                         card1.classList.add('challenger-in');
-                        vsSign.style.opacity = '1';
-                        setTimeout(() => {
-                            card1.classList.remove('challenger-in');
-                            isAnimating = false;
-                        }, 500);
+                        document.getElementById('vsSign').style.opacity = '1';
+                        setTimeout(() => { card1.classList.remove('challenger-in'); isAnimating = false; }, 500);
                     }, 50);
-
-                }, 400); // 動畫時間與位移同步
+                }, 400);
             } else {
                 showFinalist(winner);
             }
@@ -277,17 +279,13 @@
             document.querySelector('.global-hook').style.display = 'none';
             document.getElementById('pkHeader').style.display = 'none'; 
             document.getElementById('progressWrap').style.display = 'none';
-            
             document.getElementById('pkStage').innerHTML = `
                 <div class="winner-stage">
                     <div class="babe-card winner-final-card">
                         <div class="flag-tag">${winner.flag}</div>
                         <div style="position:absolute;top:10px;right:10px;background:var(--gold);color:#000;padding:4px 12px;border-radius:20px;font-weight:900;font-size:0.75rem;z-index:6">👑 Winner</div>
                         <img src="${winner.img}" style="opacity:1">
-                        <div class="info-panel">
-                            <div class="name-meta" style="font-size:2rem">${winner.name}</div>
-                            <div class="intro-text">今晚就決定是你了。</div>
-                        </div>
+                        <div class="info-panel"><div class="name-meta" style="font-size:2rem">${winner.name}</div><div class="intro-text">今晚就決定是你了。</div></div>
                     </div>
                     <button class="btn-register-footer" style="margin-top:25px; background:var(--gold); color:#000; box-shadow:0 0 30px var(--neon-glow);" onclick="window.location.href='${winner.link}'">觀看私密內容</button>
                 </div>
@@ -295,8 +293,6 @@
         }
 
         function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("代碼已複製！"); }
-        
-        // 初始渲染
         renderRound();
     </script>
 </body>
