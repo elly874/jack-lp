@@ -43,57 +43,56 @@
 
         /* --- 主舞台 --- */
         .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 10px 10px 30px; }
-        
-        /* 修改後的標題：更厚實清晰 */
         .instruction-main { 
             font-family: 'Noto Sans TC', sans-serif; font-size: 2.5rem; font-weight: 900; 
-            color: #fff; 
-            text-shadow: 3px 3px 0px #000, 0 0 15px var(--neon-glow); /* 強力黑色投影襯托，減少刺眼光暈 */
+            color: #fff; text-shadow: 3px 3px 0px #000, 0 0 15px var(--neon-glow);
             margin-bottom: 5px; text-align: center; 
         }
-        
         .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 10px; text-align: center; }
 
-        /* **強化版呼吸特效：誰是你的嚮導** */
         .pk-sub-header { 
             font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.4rem; 
             letter-spacing: 4px; color: var(--neon-main); margin-bottom: 30px; text-align: center;
             animation: intense-breathe 2.5s infinite ease-in-out;
-            will-change: transform, text-shadow, opacity;
         }
         @keyframes intense-breathe {
-            0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--neon-glow); opacity: 0.7; color: var(--neon-main); }
+            0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--neon-glow); opacity: 0.7; }
             50% { transform: scale(1.1); text-shadow: 0 0 25px var(--neon-main), 0 0 40px #fff; opacity: 1; color: #fff; }
         }
 
         /* PK 模組 */
-        .versus-module { 
-            display: flex; align-items: center; justify-content: center; 
-            gap: 20px; width: 100%; max-width: 1000px; position: relative; 
-            padding: 0 10px; margin-bottom: 25px;
-        }
+        .versus-module { display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%; max-width: 1000px; position: relative; padding: 0 10px; margin-bottom: 25px; }
         
         .babe-card { 
-            flex: 0 0 350px; width: 350px; height: 350px; background: #0a0a0a; border: 2px solid #222; 
+            flex: 0 0 350px; width: 350px; height: 350px; background: #000; border: 2px solid #222; 
             position: relative; cursor: pointer; overflow: hidden; 
             transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s ease;
             animation: card-wait-pulse 3s infinite ease-in-out; 
             will-change: transform; transform: translateZ(0);
         }
         @keyframes card-wait-pulse { 0%, 100% { transform: scale(1); border-color: #222; } 50% { transform: scale(1.02); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
-        .babe-card img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: opacity 0.3s ease; }
+        
+        /* **修正重點：確保圖片滿版無黑邊** */
+        .babe-card img { 
+            width: 100%; height: 100%; 
+            object-fit: cover; /* 確保填滿不留白 */
+            object-position: center top; /* 優先顯示臉部 */
+            display: block;
+            opacity: 0.9; transition: opacity 0.3s ease; 
+        }
+
         .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; }
 
         .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; text-shadow: 0 2px 10px #000; }
         .intro-text { font-size: 0.9rem; color: var(--neon-main); font-weight: bold; margin-top: 2px; }
 
-        /* 進度條 (位移到卡片下方) */
+        /* --- 進度條 --- */
         .progress-wrap { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px; }
         .progress-container { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; position: relative; }
         .progress-bar { height: 100%; width: 0%; background: var(--neon-main); box-shadow: 0 0 15px var(--neon-main); transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1); }
         .progress-text { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--neon-main); letter-spacing: 2px; }
 
-        /* 手機版並排 */
+        /* 手機版並排修正 */
         @media (max-width: 800px) {
             .versus-module { gap: 10px; padding: 0 5px; }
             .babe-card { flex: 0 0 calc(50vw - 12px); width: calc(50vw - 12px); height: calc(50vw - 12px); }
@@ -117,15 +116,16 @@
         .promo-btn:hover { background: #fff; }
         .promo-limit { font-size: 0.75rem; background: var(--gold); color: #000; padding: 3px 8px; font-weight: 900; border-radius: 2px; }
         
-        /* 註冊按鈕 */
         .btn-register-footer { width: 100%; max-width: 450px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 12px; font-weight: 900; font-size: 1.2rem; letter-spacing: 5px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; transition: 0.3s; }
         .btn-register-footer:hover { background: var(--neon-main); color: #000; box-shadow: 0 0 25px var(--neon-main); }
 
         .platform-declare-wrap { display: flex; align-items: center; justify-content: center; gap: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; font-size: 1rem; font-weight: 900; white-space: nowrap;}
         .footer-logo-small { height: 16px; filter: drop-shadow(0 0 5px #fff); }
 
+        /* 勝利者呈現 */
         .winner-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: popIn 0.6s ease-out; width: 100%; }
         .winner-final-card { aspect-ratio: 1 / 1 !important; width: min(85vw, 400px) !important; height: auto !important; border-color: var(--neon-main) !important; box-shadow: 0 0 50px var(--neon-glow); }
+        .winner-final-card img { object-fit: cover !important; }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
