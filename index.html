@@ -51,7 +51,7 @@
         .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 8px; text-align: center; }
         .pk-sub-header { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.3rem; letter-spacing: 4px; color: var(--neon-main); margin-bottom: 30px; text-align: center; }
 
-        /* PK 模組：左右並排 */
+        /* PK 模組 */
         .versus-module { 
             display: flex; align-items: center; justify-content: center; 
             gap: 20px; width: 100%; max-width: 1000px; position: relative; 
@@ -72,7 +72,7 @@
         .name-meta { font-size: 1.6rem; font-weight: 900; color: #fff; text-shadow: 0 2px 10px #000; }
         .intro-text { font-size: 0.9rem; color: var(--neon-main); font-weight: bold; margin-top: 2px; }
 
-        /* --- 進度反饋系統 (位於選項下方) --- */
+        /* --- 進度反饋系統 --- */
         .progress-wrap { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-top: 10px; }
         .progress-container {
             width: 100%; height: 6px; background: rgba(255,255,255,0.1);
@@ -87,7 +87,7 @@
             letter-spacing: 2px; opacity: 0.8;
         }
 
-        /* 手機版並排與位移 */
+        /* --- RWD 手機版 --- */
         @media (max-width: 800px) {
             .versus-module { gap: 10px; padding: 0 5px; }
             .babe-card { flex: 0 0 calc(50vw - 12px); width: calc(50vw - 12px); height: calc(50vw - 12px); }
@@ -133,6 +133,7 @@
         .promo-btn:hover { background: #fff; }
         .promo-limit { font-size: 0.75rem; background: var(--gold); color: #000; padding: 3px 8px; font-weight: 900; border-radius: 2px; }
 
+        /* 核心修改：註冊按鈕連結更新 */
         .btn-register-footer { width: 100%; max-width: 450px; background: transparent; border: 2px solid var(--neon-main); color: var(--neon-main); padding: 12px; font-weight: 900; font-size: 1.2rem; letter-spacing: 5px; cursor: pointer; border-radius: 4px; box-shadow: 0 0 10px var(--neon-glow); margin-bottom: 15px; transition: 0.3s; }
         .btn-register-footer:hover { background: var(--neon-main); color: #000; box-shadow: 0 0 25px var(--neon-main); }
 
@@ -192,7 +193,7 @@
             <span class="promo-limit">限量 200 位，要換要快</span>
         </div>
 
-        <button class="btn-register-footer" onclick="openLiveroom()">馬上去註冊</button>
+        <button class="btn-register-footer" onclick="window.location.href='https://swa9.xyz/kIv3u'">馬上去註冊</button>
 
         <div class="platform-declare-wrap">
             <img src="https://pub-b817e22edf6447beb72ee04f1adf2d70.r2.dev/0401/SWAG-Logo-White-1200.png" class="footer-logo-small">
@@ -308,9 +309,7 @@
             `;
         }
 
-        function openLiveroom() { window.location.href = "https://swag.live/"; }
         function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("代碼已複製！"); }
-        
         renderRound();
     </script>
 </body>
