@@ -45,7 +45,19 @@
         .main-pk-stage { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10; padding: 10px 10px 20px; }
         .instruction-main { font-family: 'Noto Sans TC', sans-serif; font-size: 2.5rem; font-weight: 900; color: #fff; text-shadow: 3px 3px 0px #000, 0 0 15px var(--neon-glow); margin-bottom: 5px; text-align: center; }
         .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 10px; text-align: center; }
-        .pk-sub-header { font-family: 'Noto Serif TC', serif; font-style: italic; font-size: 1.4rem; letter-spacing: 4px; color: var(--neon-main); margin-bottom: 30px; text-align: center; animation: intense-breathe 2.5s infinite ease-in-out; }
+        
+        /* 修改 2：更換「嚮導」字體為 Noto Serif TC 並強化樣式 */
+        .pk-sub-header { 
+            font-family: 'Noto Serif TC', serif; 
+            font-weight: 900;
+            font-style: italic; 
+            font-size: 1.8rem; /* 稍微放大增加張力 */
+            letter-spacing: 2px; 
+            color: var(--neon-main); 
+            margin-bottom: 30px; 
+            text-align: center; 
+            animation: intense-breathe 2.5s infinite ease-in-out; 
+        }
         @keyframes intense-breathe { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--neon-glow); opacity: 0.7; } 50% { transform: scale(1.1); text-shadow: 0 0 25px var(--neon-main), 0 0 40px #fff; opacity: 1; color: #fff; } }
 
         /* PK 模組 */
@@ -67,6 +79,7 @@
             .winner-to-throne { animation: slideToThroneMob 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
             @keyframes slideToThroneMob { to { transform: translateX(calc(-50vw + 2px)); } }
             .instruction-main { font-size: 1.6rem; }
+            .pk-sub-header { font-size: 1.4rem; } /* 手機版字體調整 */
         }
 
         .winner-pulse { animation: winnerCelebrate 0.5s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards !important; z-index: 12; }
@@ -134,13 +147,6 @@
         }
         .footer-logo { height: 18px; }
 
-        @media (max-width: 600px) {
-            .promo-title { font-size: 1.2rem; }
-            .promo-desc { font-size: 0.95rem; }
-            .promo-code-val { font-size: 1.1rem; padding: 5px 10px; }
-            .platform-legal { font-size: 0.8rem; flex-wrap: wrap; }
-        }
-
         .winner-stage { display: flex; flex-direction: column; align-items: center; justify-content: center; animation: popIn 0.6s ease-out; width: 100%; }
         .winner-final-card { aspect-ratio: 1 / 1 !important; width: min(85vw, 400px) !important; height: auto !important; border-color: var(--gold) !important; box-shadow: 0 0 50px var(--gold); }
         @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -188,7 +194,7 @@
 
         <div class="promo-row-wrap">
             <div class="promo-copy-box">
-                <span class="promo-code-val">1212HAPPYTALK</span>
+                <span class="promo-code-val">JACK666</span>
                 <button class="promo-copy-btn" onclick="copyCode()">複製</button>
             </div>
             <span class="promo-limit-tag">限量 200 位，要換要快</span>
@@ -222,7 +228,6 @@
         function updateProgress() {
             const percent = ((currentStep - 1) / totalSteps) * 100;
             document.getElementById('pBar').style.width = percent + '%';
-            // 修改：進度文字更換為 ROUND
             document.getElementById('pText').innerText = currentStep === totalSteps ? "FINAL ROUND" : `ROUND ${currentStep} / ${totalSteps}`;
         }
 
@@ -293,7 +298,8 @@
             `;
         }
 
-        function copyCode() { navigator.clipboard.writeText("1212HAPPYTALK"); alert("代碼已複製！"); }
+        /* 修改 1：複製功能更新為 JACK666 */
+        function copyCode() { navigator.clipboard.writeText("JACK666"); alert("代碼已複製！"); }
         renderRound();
     </script>
 </body>
