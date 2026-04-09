@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SWAG x Jack | EXOTIC NEON NIGHT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:ital,wght@1,900&family=Bebas+Neue&family=Noto+Sans+TC:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900&family=Bebas+Neue&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-deep: #050505;
@@ -46,26 +46,25 @@
         .instruction-main { font-family: 'Noto Sans TC', sans-serif; font-size: 2.5rem; font-weight: 900; color: #fff; text-shadow: 3px 3px 0px #000, 0 0 15px var(--neon-glow); margin-bottom: 5px; text-align: center; }
         .global-hook { font-size: 1.1rem; font-weight: bold; color: var(--neon-light); letter-spacing: 1px; margin-bottom: 10px; text-align: center; }
         
-        /* 修改 2：更換「嚮導」字體為 Noto Serif TC 並強化樣式 */
+        /* 這裡套用新黑體樣式 */
         .pk-sub-header { 
-            font-family: 'Noto Serif TC', serif; 
+            font-family: 'Noto Sans TC', "Microsoft YaHei", sans-serif; 
             font-weight: 900;
-            font-style: italic; 
-            font-size: 1.8rem; /* 稍微放大增加張力 */
-            letter-spacing: 2px; 
-            color: var(--neon-main); 
+            font-size: 1.8rem; 
+            letter-spacing: 6px; 
+            color: #fff; 
             margin-bottom: 30px; 
             text-align: center; 
             animation: intense-breathe 2.5s infinite ease-in-out; 
         }
-        @keyframes intense-breathe { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--neon-glow); opacity: 0.7; } 50% { transform: scale(1.1); text-shadow: 0 0 25px var(--neon-main), 0 0 40px #fff; opacity: 1; color: #fff; } }
+        @keyframes intense-breathe { 0%, 100% { transform: scale(1); text-shadow: 0 0 10px var(--neon-glow); opacity: 0.8; } 50% { transform: scale(1.05); text-shadow: 0 0 20px var(--neon-main), 0 0 40px var(--neon-main); opacity: 1; color: var(--neon-main); } }
 
         /* PK 模組 */
         .versus-module { display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%; max-width: 1000px; position: relative; padding: 0 10px; margin-bottom: 25px; }
         .babe-card { position: relative; cursor: pointer; overflow: hidden; background: #000; border: 2px solid #222; transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s ease; animation: card-wait-pulse 3s infinite ease-in-out; will-change: transform; }
         @keyframes card-wait-pulse { 0%, 100% { transform: scale(1); border-color: #222; } 50% { transform: scale(1.02); border-color: var(--neon-main); box-shadow: 0 0 15px var(--neon-glow); } }
         .babe-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; opacity: 0.9; transition: opacity 0.3s ease; }
-        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; }
+        .vs-sign { font-family: 'Bebas Neue', sans-serif; font-size: 4rem; color: #fff; text-shadow: 0 0 20px var(--neon-main); z-index: 11; flex-shrink: 0; transition: opacity 0.3s; }
 
         @media (min-width: 801px) {
             .babe-card { flex: 0 0 350px; width: 350px; height: 350px; }
@@ -79,7 +78,7 @@
             .winner-to-throne { animation: slideToThroneMob 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards !important; }
             @keyframes slideToThroneMob { to { transform: translateX(calc(-50vw + 2px)); } }
             .instruction-main { font-size: 1.6rem; }
-            .pk-sub-header { font-size: 1.4rem; } /* 手機版字體調整 */
+            .pk-sub-header { font-size: 1.3rem; letter-spacing: 3px; }
         }
 
         .winner-pulse { animation: winnerCelebrate 0.5s cubic-bezier(0.17, 0.89, 0.32, 1.49) forwards !important; z-index: 12; }
@@ -298,7 +297,6 @@
             `;
         }
 
-        /* 修改 1：複製功能更新為 JACK666 */
         function copyCode() { navigator.clipboard.writeText("JACK666"); alert("代碼已複製！"); }
         renderRound();
     </script>
